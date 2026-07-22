@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Test - ElectroNetwork Academy</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 2rem; background: #f0f0f0; }
+    .ok { color: green; }
+    .error { color: red; }
+    img { max-width: 200px; border: 2px solid #ccc; }
+  </style>
+</head>
+<body>
+  <h1>Diagnóstico de ElectroNetwork Academy</h1>
+  <h2>1. Logo</h2>
+  <img src="assets/logo.jpg" alt="Logo" onload="document.getElementById('logo-status').textContent='✅ Logo cargado correctamente'; document.getElementById('logo-status').className='ok'" onerror="document.getElementById('logo-status').textContent='❌ Error cargando logo'; document.getElementById('logo-status').className='error'">
+  <p id="logo-status" class="error">Cargando...</p>
+
+  <h2>2. CSS</h2>
+  <p id="css-status">Verificando...</p>
+
+  <h2>3. JavaScript</h2>
+  <p id="js-status">Verificando...</p>
+
+  <h2>4. localStorage</h2>
+  <p id="ls-status">Verificando...</p>
+
+  <script src="js/app.js"></script>
+  <script>
+    // Verificar CSS
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'css/estilos.css';
+    link.onload = function() {
+      document.getElementById('css-status').textContent = '✅ CSS cargado correctamente';
+      document.getElementById('css-status').className = 'ok';
+    };
+    link.onerror = function() {
+      document.getElementById('css-status').textContent = '❌ Error cargando CSS';
+      document.getElementById('css-status').className = 'error';
+    };
+    document.head.appendChild(link);
+
+    // Verificar JS
+    setTimeout(function() {
+      if (typeof getData === 'function') {
+        document.getElementById('js-status').textContent = '✅ JavaScript cargado correctamente';
+        document.getElementById('js-status').className = 'ok';
+      } else {
+        document.getElementById('js-status').textContent = '❌ Error: app.js no cargó o tiene errores';
+        document.getElementById('js-status').className = 'error';
+      }
+    }, 500);
+
+    // Verificar localStorage
+    try {
+      localStorage.setItem('test', 'ok');
+      localStorage.removeItem('test');
+      document.getElementById('ls-status').textContent = '✅ localStorage funciona correctamente';
+      document.getElementById('ls-status').className = 'ok';
+    } catch(e) {
+      document.getElementById('ls-status').textContent = '❌ localStorage bloqueado: ' + e.message;
+      document.getElementById('ls-status').className = 'error';
+    }
+  </script>
+</body>
+</html>
