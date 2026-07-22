@@ -33,70 +33,127 @@
       </div>
     </div>
 
-    <div class="grid grid-2" id="modulesGrid"></div>
+    <!-- Módulos en HTML estático -->
+    <div class="grid grid-2">
+
+      <!-- Módulo 1 - Disponible -->
+      <div class="module-card" onclick="window.location.href='modulo-01.html'" style="cursor: pointer;">
+        <div class="module-number" style="background: var(--primary);">1</div>
+        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📋</div>
+        <div class="module-title">Alcance y Fundamentos</div>
+        <div class="module-desc">Estructura legal, esquemas de certificación y relación con ISO/IEC 17000</div>
+        <div class="module-meta">
+          <span>⏱️ 18 min</span>
+          <span class="badge badge-primary">Disponible</span>
+        </div>
+      </div>
+
+      <!-- Módulo 2 - Bloqueado -->
+      <div class="module-card locked">
+        <div class="module-number" style="background: #a0aec0;">2</div>
+        <div style="font-size: 2rem; margin-bottom: 0.5rem;">⚖️</div>
+        <div class="module-title">Imparcialidad</div>
+        <div class="module-desc">Gestión de conflictos de interés y separación educación-certificación</div>
+        <div class="module-meta">
+          <span>⏱️ 16 min</span>
+          <span class="badge badge-danger">Bloqueado</span>
+        </div>
+      </div>
+
+      <!-- Módulo 3 - Bloqueado -->
+      <div class="module-card locked">
+        <div class="module-number" style="background: #a0aec0;">3</div>
+        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📐</div>
+        <div class="module-title">Esquemas de Certificación</div>
+        <div class="module-desc">Diseño, participación de partes interesadas y análisis de trabajo</div>
+        <div class="module-meta">
+          <span>⏱️ 20 min</span>
+          <span class="badge badge-danger">Bloqueado</span>
+        </div>
+      </div>
+
+      <!-- Módulo 4 - Bloqueado -->
+      <div class="module-card locked">
+        <div class="module-number" style="background: #a0aec0;">4</div>
+        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📝</div>
+        <div class="module-title">Evaluación y Exámenes</div>
+        <div class="module-desc">Validez, fiabilidad, supervisión y seguridad de exámenes</div>
+        <div class="module-meta">
+          <span>⏱️ 18 min</span>
+          <span class="badge badge-danger">Bloqueado</span>
+        </div>
+      </div>
+
+      <!-- Módulo 5 - Bloqueado -->
+      <div class="module-card locked">
+        <div class="module-number" style="background: #a0aec0;">5</div>
+        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🤖</div>
+        <div class="module-title">Inteligencia Artificial</div>
+        <div class="module-desc">Requisitos nuevos de la edición 2026 para IA en certificación</div>
+        <div class="module-meta">
+          <span>⏱️ 15 min</span>
+          <span class="badge badge-danger">Bloqueado</span>
+        </div>
+      </div>
+
+      <!-- Módulo 6 - Bloqueado -->
+      <div class="module-card locked">
+        <div class="module-number" style="background: #a0aec0;">6</div>
+        <div style="font-size: 2rem; margin-bottom: 0.5rem;">👥</div>
+        <div class="module-title">Recursos y Personal</div>
+        <div class="module-desc">Competencia, confidencialidad, subcontratación y recursos</div>
+        <div class="module-meta">
+          <span>⏱️ 17 min</span>
+          <span class="badge badge-danger">Bloqueado</span>
+        </div>
+      </div>
+
+      <!-- Módulo 7 - Bloqueado -->
+      <div class="module-card locked">
+        <div class="module-number" style="background: #a0aec0;">7</div>
+        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏆</div>
+        <div class="module-title">Certificación y Certificados</div>
+        <div class="module-desc">Decisiones, certificados, marcas y suspensión</div>
+        <div class="module-meta">
+          <span>⏱️ 16 min</span>
+          <span class="badge badge-danger">Bloqueado</span>
+        </div>
+      </div>
+
+      <!-- Módulo 8 - Bloqueado -->
+      <div class="module-card locked">
+        <div class="module-number" style="background: #a0aec0;">8</div>
+        <div style="font-size: 2rem; margin-bottom: 0.5rem;">⚙️</div>
+        <div class="module-title">Sistema de Gestión</div>
+        <div class="module-desc">Auditorías, revisión de dirección, riesgos y mejora continua</div>
+        <div class="module-meta">
+          <span>⏱️ 19 min</span>
+          <span class="badge badge-danger">Bloqueado</span>
+        </div>
+      </div>
+
+    </div>
   </div>
 
   <script src="js/app.js"></script>
   <script>
-    const user = checkAuth();
-    if (!user) window.location.href = 'index.html';
-    document.getElementById('userName').textContent = user.name || user.email;
-
-    const modules = [
-      { id: 0, title: 'Alcance y Fundamentos', desc: 'Estructura legal, esquemas de certificación y relación con ISO/IEC 17000', time: '18 min', icon: '📋' },
-      { id: 1, title: 'Imparcialidad', desc: 'Gestión de conflictos de interés y separación educación-certificación', time: '16 min', icon: '⚖️' },
-      { id: 2, title: 'Esquemas de Certificación', desc: 'Diseño, participación de partes interesadas y análisis de trabajo', time: '20 min', icon: '📐' },
-      { id: 3, title: 'Evaluación y Exámenes', desc: 'Validez, fiabilidad, supervisión y seguridad de exámenes', time: '18 min', icon: '📝' },
-      { id: 4, title: 'Inteligencia Artificial', desc: 'Requisitos nuevos de la edición 2026 para IA en certificación', time: '15 min', icon: '🤖' },
-      { id: 5, title: 'Recursos y Personal', desc: 'Competencia, confidencialidad, subcontratación y recursos', time: '17 min', icon: '👥' },
-      { id: 6, title: 'Certificación y Certificados', desc: 'Decisiones, certificados, marcas y suspensión', time: '16 min', icon: '🏆' },
-      { id: 7, title: 'Sistema de Gestión', desc: 'Auditorías, revisión de dirección, riesgos y mejora continua', time: '19 min', icon: '⚙️' }
-    ];
-
-    function loadCourse() {
-      const progress = getTotalProgress();
-      document.getElementById('progressPercent').textContent = progress + '%';
-      document.getElementById('progressBar').style.width = progress + '%';
-
-      const grid = document.getElementById('modulesGrid');
-      grid.innerHTML = '';
-
-      modules.forEach(mod => {
-        const unlocked = isModuleUnlocked(mod.id);
-        const completed = isModuleCompleted(mod.id);
-        const mp = getModuleProgress(user.id, mod.id);
-        const score = mp ? mp.score : 0;
-        const moduleNum = String(mod.id + 1).padStart(2, '0');
-        const moduleUrl = 'modulo-' + moduleNum + '.html';
-
-        const card = document.createElement('div');
-        card.className = 'module-card' + (unlocked ? '' : ' locked');
-        if (unlocked) {
-          card.style.cursor = 'pointer';
-          card.onclick = function() { window.location.href = moduleUrl; };
-        }
-
-        const numBg = completed ? 'var(--success)' : (unlocked ? 'var(--primary)' : '#a0aec0');
-        const numContent = completed ? '✓' : (mod.id + 1);
-        const statusBadge = completed 
-          ? '<span class="badge badge-success">' + score + '%</span>' 
-          : (unlocked ? '<span class="badge badge-primary">Disponible</span>' : '<span class="badge badge-danger">Bloqueado</span>');
-
-        card.innerHTML = 
-          '<div class="module-number" style="background: ' + numBg + ';">' + numContent + '</div>' +
-          '<div style="font-size: 2rem; margin-bottom: 0.5rem;">' + mod.icon + '</div>' +
-          '<div class="module-title">' + mod.title + '</div>' +
-          '<div class="module-desc">' + mod.desc + '</div>' +
-          '<div class="module-meta">' +
-            '<span>⏱️ ' + mod.time + '</span>' +
-            statusBadge +
-          '</div>';
-
-        grid.appendChild(card);
-      });
+    // Funciones mínimas embebidas por si app.js falla
+    function getSession() {
+      try { return JSON.parse(localStorage.getItem('ena_session')) || {user:null}; }
+      catch(e) { return {user:null}; }
     }
 
-    loadCourse();
+    var user = getSession().user;
+    if (!user) {
+      window.location.href = 'index.html';
+    } else {
+      document.getElementById('userName').textContent = user.name || user.email;
+    }
+
+    function logout() {
+      localStorage.setItem('ena_session', JSON.stringify({user:null}));
+      window.location.href = 'index.html';
+    }
   </script>
 </body>
 </html>
