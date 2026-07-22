@@ -4,15 +4,103 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ElectroNetwork Academy - Login</title>
-  <link rel="stylesheet" href="css/estilos.css">
   <style>
+    :root {
+      --primary: #1e3a5f;
+      --primary-light: #2c5282;
+      --accent: #e6b800;
+      --accent-hover: #d4a700;
+      --success: #38a169;
+      --danger: #e53e3e;
+      --bg: #f7fafc;
+      --card: #ffffff;
+      --text: #2d3748;
+      --text-light: #718096;
+      --border: #e2e8f0;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, var(--primary) 0%, #0f1f33 100%);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .login-box {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+    }
+    .login-logo { text-align: center; margin-bottom: 2rem; }
+    .login-logo img {
+      max-width: 180px;
+      height: auto;
+      margin-bottom: 1rem;
+      border-radius: 12px;
+    }
+    .login-logo h1 { color: var(--primary); font-size: 1.5rem; font-weight: 700; }
+    .login-logo p { color: var(--text-light); font-size: 0.875rem; margin-top: 0.25rem; }
+    .login-tabs {
+      display: flex; gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      background: var(--bg);
+      padding: 0.25rem;
+      border-radius: 8px;
+    }
+    .login-tab {
+      flex: 1; padding: 0.625rem;
+      text-align: center;
+      border-radius: 6px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--text-light);
+      font-size: 0.95rem;
+    }
+    .login-tab.active { background: white; color: var(--primary); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .form-group { margin-bottom: 1.25rem; }
+    .form-label { display: block; font-weight: 600; margin-bottom: 0.5rem; color: var(--text); font-size: 0.9rem; }
+    .form-input {
+      width: 100%; padding: 0.75rem 1rem;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      font-size: 1rem;
+      font-family: inherit;
+    }
+    .form-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(30,58,95,0.1); }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 0.5rem; padding: 0.875rem 1.5rem;
+      border-radius: 8px; font-weight: 600;
+      font-size: 0.95rem; cursor: pointer;
+      border: none; width: 100%;
+      background: var(--primary); color: white;
+    }
+    .btn:hover { background: var(--primary-light); }
+    .alert {
+      padding: 0.875rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+    .alert-success { background: #c6f6d5; color: #22543d; border-left: 4px solid var(--success); }
+    .alert-danger { background: #fed7d7; color: #742a2a; border-left: 4px solid var(--danger); }
+    .hidden { display: none !important; }
     .debug-info {
       background: #fffbeb;
       border: 1px solid #f59e0b;
       border-radius: 8px;
       padding: 1rem;
       margin-top: 1rem;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: #92400e;
     }
     .debug-info code {
@@ -24,101 +112,110 @@
   </style>
 </head>
 <body>
-  <div class="login-page">
-    <div class="login-box">
-      <div class="login-logo">
-        <div class="logo-icon">ENA</div>
-        <h1>ElectroNetwork Academy</h1>
-        <p>Plataforma de capacitación ISO/IEC 17024:2026</p>
-      </div>
+  <div class="login-box">
+    <div class="login-logo">
+      <img src="assets/logo.jpg" alt="ElectroNetwork Academy">
+      <h1>ElectroNetwork Academy</h1>
+      <p>Plataforma de capacitación ISO/IEC 17024:2026</p>
+    </div>
 
-      <div class="login-tabs">
-        <button class="login-tab active" onclick="switchTab('admin')" id="tab-admin">Administrador</button>
-        <button class="login-tab" onclick="switchTab('learner')" id="tab-learner">Alumno</button>
-      </div>
+    <div class="login-tabs">
+      <button class="login-tab active" onclick="switchTab('admin')" id="tab-admin">Administrador</button>
+      <button class="login-tab" onclick="switchTab('learner')" id="tab-learner">Alumno</button>
+    </div>
 
-      <div class="form-group">
-        <label class="form-label">Correo electrónico</label>
-        <input type="email" class="form-input" id="email" placeholder="tu@correo.com" value="electronetworkacademy@gmail.com">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Contraseña</label>
-        <input type="password" class="form-input" id="password" placeholder="Cualquier contraseña funciona">
-      </div>
+    <div class="form-group">
+      <label class="form-label">Correo electrónico</label>
+      <input type="email" class="form-input" id="email" placeholder="tu@correo.com" value="electronetworkacademy@gmail.com">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Contraseña</label>
+      <input type="password" class="form-input" id="password" placeholder="Cualquier contraseña funciona">
+    </div>
 
-      <div id="loginError" class="alert alert-danger hidden" style="margin-bottom: 1rem;"></div>
-      <div id="loginSuccess" class="alert alert-success hidden" style="margin-bottom: 1rem;"></div>
+    <div id="loginError" class="alert alert-danger hidden"></div>
+    <div id="loginSuccess" class="alert alert-success hidden"></div>
 
-      <button class="btn btn-primary w-full" style="padding: 0.875rem;" onclick="doLogin()">
-        Ingresar
-      </button>
+    <button class="btn" onclick="doLogin()">Ingresar</button>
 
-      <div class="debug-info">
-        <strong>🔑 Datos de prueba:</strong><br>
-        Admin: <code>electronetworkacademy@gmail.com</code><br>
-        Alumno: <code>usuario1@empresa.com</code><br>
-        <span style="color: var(--success);">✓ Cualquier contraseña funciona en modo demo</span>
-      </div>
+    <div class="debug-info">
+      <strong>🔑 Datos de prueba:</strong><br>
+      Admin: <code>electronetworkacademy@gmail.com</code><br>
+      Alumno: <code>usuario1@empresa.com</code><br>
+      <span style="color: var(--success);">✓ Cualquier contraseña funciona</span>
     </div>
   </div>
 
-  <script src="js/app.js"></script>
   <script>
+    const DEMO_DATA = {
+      users: [
+        { id: 'admin-1', email: 'electronetworkacademy@gmail.com', name: 'Administrador Demo', role: 'admin', status: 'active' },
+        { id: 'user-1', email: 'usuario1@empresa.com', name: 'Usuario de Prueba 1', role: 'learner', status: 'active' }
+      ]
+    };
+
+    if (!localStorage.getItem('ena_data')) {
+      localStorage.setItem('ena_data', JSON.stringify(DEMO_DATA));
+    }
+    if (!localStorage.getItem('ena_session')) {
+      localStorage.setItem('ena_session', JSON.stringify({ user: null }));
+    }
+
     let currentRole = 'admin';
 
     function switchTab(role) {
       currentRole = role;
       document.querySelectorAll('.login-tab').forEach(t => t.classList.remove('active'));
       document.getElementById('tab-' + role).classList.add('active');
-
-      // Auto-fill demo emails
-      const emailInput = document.getElementById('email');
-      if (role === 'admin') {
-        emailInput.value = 'electronetworkacademy@gmail.com';
-      } else {
-        emailInput.value = 'usuario1@empresa.com';
-      }
+      document.getElementById('email').value = role === 'admin' 
+        ? 'electronetworkacademy@gmail.com' 
+        : 'usuario1@empresa.com';
     }
 
     function doLogin() {
       const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
       const errorDiv = document.getElementById('loginError');
       const successDiv = document.getElementById('loginSuccess');
 
       errorDiv.classList.add('hidden');
       successDiv.classList.add('hidden');
 
-      console.log('Intentando login:', email, 'rol:', currentRole);
+      let data;
+      try {
+        data = JSON.parse(localStorage.getItem('ena_data'));
+      } catch(e) {
+        data = DEMO_DATA;
+        localStorage.setItem('ena_data', JSON.stringify(DEMO_DATA));
+      }
 
-      // Verificar que app.js cargó
-      if (typeof login !== 'function') {
-        errorDiv.textContent = 'Error: No se cargó el sistema. Recarga la página.';
+      const user = data.users.find(u => u.email.toLowerCase() === email.toLowerCase());
+
+      if (!user) {
+        errorDiv.textContent = '✗ Usuario no encontrado. Usa los correos de demo.';
         errorDiv.classList.remove('hidden');
         return;
       }
 
-      const result = login(email, password, currentRole);
-      console.log('Resultado:', result);
-
-      if (result.success) {
-        successDiv.textContent = '✓ Login exitoso. Redirigiendo...';
-        successDiv.classList.remove('hidden');
-
-        setTimeout(() => {
-          if (currentRole === 'admin') {
-            window.location.href = 'admin.html';
-          } else {
-            window.location.href = 'curso.html';
-          }
-        }, 500);
-      } else {
-        errorDiv.textContent = '✗ ' + result.message;
+      if (user.role !== currentRole) {
+        errorDiv.textContent = '✗ Rol incorrecto. Cambia a la pestaña ' + (user.role === 'admin' ? 'Administrador' : 'Alumno') + '.';
         errorDiv.classList.remove('hidden');
+        return;
       }
+
+      localStorage.setItem('ena_session', JSON.stringify({ user: user }));
+
+      successDiv.textContent = '✓ Login exitoso. Redirigiendo...';
+      successDiv.classList.remove('hidden');
+
+      setTimeout(() => {
+        if (currentRole === 'admin') {
+          window.location.href = 'admin.html';
+        } else {
+          window.location.href = 'curso.html';
+        }
+      }, 800);
     }
 
-    // Permitir Enter para login
     document.getElementById('password').addEventListener('keypress', function(e) {
       if (e.key === 'Enter') doLogin();
     });

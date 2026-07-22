@@ -51,17 +51,10 @@ body {
   font-weight: 700;
 }
 
-.header-brand .logo-icon {
-  width: 36px;
+.header-brand .logo-img {
   height: 36px;
-  background: var(--accent);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--primary);
-  font-weight: 900;
-  font-size: 1.1rem;
+  width: auto;
+  border-radius: 6px;
 }
 
 .header-nav {

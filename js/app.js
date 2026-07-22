@@ -67,7 +67,11 @@ function initData() {
 
 // Obtener datos
 function getData() {
-  return JSON.parse(localStorage.getItem('ena_data') || '{}');
+  try {
+    return JSON.parse(localStorage.getItem('ena_data')) || DEMO_DATA;
+  } catch(e) {
+    return DEMO_DATA;
+  }
 }
 
 // Guardar datos
@@ -77,7 +81,11 @@ function saveData(data) {
 
 // Obtener sesión
 function getSession() {
-  return JSON.parse(localStorage.getItem('ena_session') || '{"user":null}');
+  try {
+    return JSON.parse(localStorage.getItem('ena_session')) || { user: null };
+  } catch(e) {
+    return { user: null };
+  }
 }
 
 // Guardar sesión
@@ -85,17 +93,17 @@ function saveSession(session) {
   localStorage.setItem('ena_session', JSON.stringify(session));
 }
 
-// Login
+// Login (compatible con index.html autónomo)
 function login(email, password, role) {
   const data = getData();
-  const user = data.users.find(u => u.email === email);
+  const user = data.users.find(u => u.email.toLowerCase() === email.toLowerCase());
 
   if (!user) {
     return { success: false, message: 'Usuario no encontrado' };
   }
 
   if (user.role !== role) {
-    return { success: false, message: 'Rol incorrecto' };
+    return { success: false, message: 'Rol incorrecto. Cambia de pestaña.' };
   }
 
   if (user.status === 'pending') {
@@ -105,9 +113,6 @@ function login(email, password, role) {
   if (user.status === 'inactive') {
     return { success: false, message: 'Tu cuenta ha sido desactivada' };
   }
-
-  // En producción, aquí verificarías la contraseña hasheada
-  // Por ahora, cualquier contraseña funciona para demo
 
   saveSession({ user: user });
   return { success: true, user: user };
@@ -158,7 +163,7 @@ function addUser(email, name) {
     return { success: false, message: 'No hay cupos disponibles' };
   }
 
-  if (data.users.find(u => u.email === email)) {
+  if (data.users.find(u => u.email.toLowerCase() === email.toLowerCase())) {
     return { success: false, message: 'Este correo ya está registrado' };
   }
 
@@ -221,7 +226,6 @@ function saveModuleProgress(moduleId, score, completed) {
   mp.completed = completed;
   if (completed) mp.completedAt = new Date().toISOString();
 
-  // Actualizar currentModule del usuario
   const userIndex = data.users.findIndex(u => u.id === user.id);
   if (userIndex !== -1) {
     data.users[userIndex].currentModule = Math.max(data.users[userIndex].currentModule, moduleId + 1);
@@ -229,7 +233,6 @@ function saveModuleProgress(moduleId, score, completed) {
 
   saveData(data);
 
-  // Actualizar sesión
   const session = getSession();
   session.user = data.users[userIndex];
   saveSession(session);
@@ -274,10 +277,10 @@ function formatTime(seconds) {
   return `${mins}:${secs.toString().padStart(2, '0')}`;
 }
 
-// Exportar datos (para backup)
+// Exportar datos
 function exportData() {
   const data = getData();
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
