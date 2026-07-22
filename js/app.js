@@ -1,8 +1,8 @@
 // ============================================
-// ELECTRONETWORK ACADEMY - APP LOGIC
+// ELECTRONETWORK ACADEMY - APP LOGIC v2
+// Con sistema de expiración de 30 días
 // ============================================
 
-// Datos iniciales de demo
 const DEMO_DATA = {
   companies: [
     {
@@ -27,6 +27,7 @@ const DEMO_DATA = {
       status: 'active',
       progress: {},
       currentModule: 0,
+      accessExpiresAt: null, // Sin expiración para admin
       createdAt: new Date().toISOString()
     },
     {
@@ -38,6 +39,7 @@ const DEMO_DATA = {
       status: 'active',
       progress: {},
       currentModule: 0,
+      accessExpiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // +30 días
       createdAt: new Date().toISOString()
     },
     {
@@ -49,13 +51,15 @@ const DEMO_DATA = {
       status: 'pending',
       progress: {},
       currentModule: 0,
+      accessExpiresAt: null,
       createdAt: new Date().toISOString()
     }
   ],
   moduleProgress: []
 };
 
-// Inicializar datos si no existen
+const ACCESS_DAYS = 30; // Días de acceso por defecto
+
 function initData() {
   if (!localStorage.getItem('ena_data')) {
     localStorage.setItem('ena_data', JSON.stringify(DEMO_DATA));
@@ -65,35 +69,52 @@ function initData() {
   }
 }
 
-// Obtener datos
 function getData() {
-  try {
-    return JSON.parse(localStorage.getItem('ena_data')) || DEMO_DATA;
-  } catch(e) {
-    return DEMO_DATA;
-  }
+  try { return JSON.parse(localStorage.getItem('ena_data')) || DEMO_DATA; }
+  catch(e) { return DEMO_DATA; }
 }
 
-// Guardar datos
 function saveData(data) {
   localStorage.setItem('ena_data', JSON.stringify(data));
 }
 
-// Obtener sesión
 function getSession() {
-  try {
-    return JSON.parse(localStorage.getItem('ena_session')) || { user: null };
-  } catch(e) {
-    return { user: null };
-  }
+  try { return JSON.parse(localStorage.getItem('ena_session')) || { user: null }; }
+  catch(e) { return { user: null }; }
 }
 
-// Guardar sesión
 function saveSession(session) {
   localStorage.setItem('ena_session', JSON.stringify(session));
 }
 
-// Login (compatible con index.html autónomo)
+// ============================================
+// SISTEMA DE EXPIRACIÓN
+// ============================================
+
+function getDaysRemaining(expiresAt) {
+  if (!expiresAt) return Infinity;
+  const now = new Date();
+  const exp = new Date(expiresAt);
+  const diff = exp - now;
+  return Math.ceil(diff / (1000 * 60 * 60 * 24));
+}
+
+function isAccessExpired(user) {
+  if (!user || !user.accessExpiresAt) return false;
+  return new Date() > new Date(user.accessExpiresAt);
+}
+
+function formatTimeRemaining(days) {
+  if (days === Infinity) return 'Sin límite';
+  if (days <= 0) return 'Expirado';
+  if (days === 1) return '1 día';
+  return days + ' días';
+}
+
+// ============================================
+// LOGIN CON VERIFICACIÓN DE EXPIRACIÓN
+// ============================================
+
 function login(email, password, role) {
   const data = getData();
   const user = data.users.find(u => u.email.toLowerCase() === email.toLowerCase());
@@ -114,23 +135,34 @@ function login(email, password, role) {
     return { success: false, message: 'Tu cuenta ha sido desactivada' };
   }
 
+  // Verificar expiración
+  if (isAccessExpired(user)) {
+    return { success: false, message: 'Tu acceso ha expirado. Contacta al administrador.' };
+  }
+
   saveSession({ user: user });
   return { success: true, user: user };
 }
 
-// Logout
 function logout() {
   saveSession({ user: null });
   window.location.href = 'index.html';
 }
 
-// Verificar sesión
 function checkAuth(requiredRole) {
   const session = getSession();
   if (!session.user) {
     window.location.href = 'index.html';
     return null;
   }
+
+  // Verificar expiración en cada página
+  if (isAccessExpired(session.user)) {
+    alert('Tu acceso ha expirado. Serás redirigido al login.');
+    logout();
+    return null;
+  }
+
   if (requiredRole && session.user.role !== requiredRole) {
     window.location.href = 'index.html';
     return null;
@@ -138,13 +170,10 @@ function checkAuth(requiredRole) {
   return session.user;
 }
 
-// Obtener usuario actual
 function getCurrentUser() {
-  const session = getSession();
-  return session.user;
+  return getSession().user;
 }
 
-// Obtener empresa del usuario
 function getUserCompany() {
   const data = getData();
   const user = getCurrentUser();
@@ -152,8 +181,12 @@ function getUserCompany() {
   return data.companies.find(c => c.id === user.companyId);
 }
 
-// Agregar usuario (admin)
-function addUser(email, name) {
+// ============================================
+// ADMIN: AGREGAR USUARIO CON FECHA DE EXPIRACIÓN
+// ============================================
+
+function addUser(email, name, days) {
+  days = days || ACCESS_DAYS;
   const data = getData();
   const currentUser = getCurrentUser();
   const company = getUserCompany();
@@ -167,6 +200,8 @@ function addUser(email, name) {
     return { success: false, message: 'Este correo ya está registrado' };
   }
 
+  const expiresAt = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toISOString();
+
   const newUser = {
     id: 'user-' + Date.now(),
     companyId: currentUser.companyId,
@@ -176,6 +211,7 @@ function addUser(email, name) {
     status: 'active',
     progress: {},
     currentModule: 0,
+    accessExpiresAt: expiresAt,
     createdAt: new Date().toISOString()
   };
 
@@ -183,10 +219,29 @@ function addUser(email, name) {
   company.licensesUsed++;
 
   saveData(data);
-  return { success: true, user: newUser };
+  return { success: true, user: newUser, expiresAt: expiresAt };
 }
 
-// Eliminar usuario
+// Renovar acceso de usuario
+function renewUserAccess(userId, days) {
+  days = days || ACCESS_DAYS;
+  const data = getData();
+  const userIndex = data.users.findIndex(u => u.id === userId);
+
+  if (userIndex === -1) return { success: false, message: 'Usuario no encontrado' };
+
+  const newExpiresAt = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toISOString();
+  data.users[userIndex].accessExpiresAt = newExpiresAt;
+  data.users[userIndex].status = 'active';
+
+  saveData(data);
+  return { success: true, expiresAt: newExpiresAt };
+}
+
+// ============================================
+// ADMIN: ELIMINAR USUARIO
+// ============================================
+
 function removeUser(userId) {
   const data = getData();
   const company = getUserCompany();
@@ -204,13 +259,15 @@ function removeUser(userId) {
   return { success: true };
 }
 
-// Obtener progreso de módulo
+// ============================================
+// PROGRESO DE MÓDULOS
+// ============================================
+
 function getModuleProgress(userId, moduleId) {
   const data = getData();
   return data.moduleProgress.find(mp => mp.userId === userId && mp.moduleId === moduleId);
 }
 
-// Guardar progreso de módulo
 function saveModuleProgress(moduleId, score, completed) {
   const data = getData();
   const user = getCurrentUser();
@@ -238,7 +295,6 @@ function saveModuleProgress(moduleId, score, completed) {
   saveSession(session);
 }
 
-// Verificar si módulo está desbloqueado
 function isModuleUnlocked(moduleId) {
   const user = getCurrentUser();
   if (!user) return moduleId === 0;
@@ -246,7 +302,6 @@ function isModuleUnlocked(moduleId) {
   return moduleId <= user.currentModule;
 }
 
-// Verificar si módulo está completado
 function isModuleCompleted(moduleId) {
   const data = getData();
   const user = getCurrentUser();
@@ -254,7 +309,6 @@ function isModuleCompleted(moduleId) {
   return data.moduleProgress.some(mp => mp.userId === user.id && mp.moduleId === moduleId && mp.completed);
 }
 
-// Calcular progreso total
 function getTotalProgress() {
   const data = getData();
   const user = getCurrentUser();
@@ -263,21 +317,22 @@ function getTotalProgress() {
   return Math.round((completed / 8) * 100);
 }
 
-// Formatear fecha
+// ============================================
+// UTILIDADES
+// ============================================
+
 function formatDate(dateStr) {
   if (!dateStr) return 'N/A';
   const d = new Date(dateStr);
   return d.toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' });
 }
 
-// Formatear tiempo
 function formatTime(seconds) {
   const mins = Math.floor(seconds / 60);
   const secs = seconds % 60;
   return `${mins}:${secs.toString().padStart(2, '0')}`;
 }
 
-// Exportar datos
 function exportData() {
   const data = getData();
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -289,7 +344,6 @@ function exportData() {
   URL.revokeObjectURL(url);
 }
 
-// Importar datos
 function importData(jsonStr) {
   try {
     const data = JSON.parse(jsonStr);
@@ -300,7 +354,6 @@ function importData(jsonStr) {
   }
 }
 
-// Resetear datos a demo
 function resetData() {
   if (confirm('¿Estás seguro? Esto borrará todos los datos y restaurará los de demostración.')) {
     localStorage.setItem('ena_data', JSON.stringify(DEMO_DATA));
@@ -310,5 +363,4 @@ function resetData() {
   }
 }
 
-// Inicializar al cargar
 document.addEventListener('DOMContentLoaded', initData);

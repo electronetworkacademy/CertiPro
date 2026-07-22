@@ -47,7 +47,7 @@
         <span class="badge badge-info" id="badge-cupos">Cargando...</span>
       </div>
       <form onsubmit="handleAddUser(event)">
-        <div class="grid grid-2">
+        <div class="grid grid-3">
           <div class="form-group">
             <label class="form-label">Correo electrónico</label>
             <input type="email" class="form-input" id="newEmail" placeholder="alumno@empresa.com" required>
@@ -55,6 +55,10 @@
           <div class="form-group">
             <label class="form-label">Nombre completo</label>
             <input type="text" class="form-input" id="newName" placeholder="Juan Pérez">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Días de acceso</label>
+            <input type="number" class="form-input" id="newDays" value="30" min="1" max="365">
           </div>
         </div>
         <button type="submit" class="btn btn-primary">Agregar Alumno</button>
@@ -80,6 +84,7 @@
               <th>Nombre</th>
               <th>Correo</th>
               <th>Estado</th>
+              <th>Tiempo Restante</th>
               <th>Progreso</th>
               <th>Módulo Actual</th>
               <th>Acciones</th>
@@ -95,13 +100,9 @@
 
   <script src="js/app.js"></script>
   <script>
-    // Verificar autenticación
     const user = checkAuth('admin');
-    if (!user) {
-      window.location.href = 'index.html';
-    }
+    if (!user) window.location.href = 'index.html';
 
-    // Cargar datos
     function loadAdminData() {
       const data = getData();
       const company = getUserCompany();
@@ -117,7 +118,7 @@
       const completedCount = data.moduleProgress.filter(mp => mp.completed).length;
       document.getElementById('stat-completados').textContent = completedCount;
 
-      document.getElementById('badge-cupos').textContent = `${company.licensesUsed}/${company.licensesTotal} cupos usados`;
+      document.getElementById('badge-cupos').textContent = company.licensesUsed + '/' + company.licensesTotal + ' cupos usados';
 
       // Tabla de usuarios
       const companyUsers = data.users.filter(u => u.companyId === currentUser.companyId && u.role === 'learner');
@@ -126,17 +127,34 @@
 
       companyUsers.forEach(u => {
         const progress = getTotalProgressForUser(u.id);
-        const statusBadge = u.status === 'active' 
-          ? '<span class="badge badge-success">Activo</span>'
-          : u.status === 'pending'
-          ? '<span class="badge badge-warning">Pendiente</span>'
-          : '<span class="badge badge-danger">Inactivo</span>';
+        const daysLeft = getDaysRemaining(u.accessExpiresAt);
+        const isExpired = daysLeft <= 0;
+
+        let statusBadge;
+        if (u.status === 'active' && !isExpired) {
+          statusBadge = '<span class="badge badge-success">Activo</span>';
+        } else if (isExpired) {
+          statusBadge = '<span class="badge badge-danger">Expirado</span>';
+        } else if (u.status === 'pending') {
+          statusBadge = '<span class="badge badge-warning">Pendiente</span>';
+        } else {
+          statusBadge = '<span class="badge badge-danger">Inactivo</span>';
+        }
+
+        const timeBadge = isExpired 
+          ? '<span class="badge badge-danger">Expirado</span>'
+          : (daysLeft === Infinity 
+            ? '<span class="badge badge-info">Sin límite</span>'
+            : (daysLeft <= 5 
+              ? '<span class="badge badge-warning">' + daysLeft + ' días</span>'
+              : '<span class="badge badge-primary">' + daysLeft + ' días</span>'));
 
         const row = document.createElement('tr');
         row.innerHTML = `
           <td>${u.name || '-'}</td>
           <td>${u.email}</td>
           <td>${statusBadge}</td>
+          <td>${timeBadge}</td>
           <td>
             <div class="progress-bar" style="width: 120px;">
               <div class="progress-bar-fill" style="width: ${progress}%;"></div>
@@ -145,7 +163,8 @@
           </td>
           <td>Módulo ${u.currentModule + 1}</td>
           <td>
-            <button class="btn btn-danger" style="padding: 0.375rem 0.75rem; font-size: 0.8rem;" onclick="removeUser('${u.id}'); loadAdminData();">Eliminar</button>
+            <button class="btn btn-primary" style="padding: 0.375rem 0.75rem; font-size: 0.8rem; margin-right: 0.25rem;" onclick="handleRenew('${u.id}')">Renovar</button>
+            <button class="btn btn-danger" style="padding: 0.375rem 0.75rem; font-size: 0.8rem;" onclick="handleRemove('${u.id}')">Eliminar</button>
           </td>
         `;
         tbody.appendChild(row);
@@ -162,17 +181,42 @@
       e.preventDefault();
       const email = document.getElementById('newEmail').value.trim();
       const name = document.getElementById('newName').value.trim();
+      const days = parseInt(document.getElementById('newDays').value) || 30;
       const msgDiv = document.getElementById('addUserMsg');
 
-      const result = addUser(email, name);
+      const result = addUser(email, name, days);
 
       if (result.success) {
-        msgDiv.innerHTML = '<span style="color: var(--success);">✓ Alumno agregado correctamente</span>';
+        const expDate = formatDate(result.expiresAt);
+        msgDiv.innerHTML = '<span style="color: var(--success);">✓ Alumno agregado. Acceso hasta: ' + expDate + '</span>';
         document.getElementById('newEmail').value = '';
         document.getElementById('newName').value = '';
         loadAdminData();
       } else {
-        msgDiv.innerHTML = `<span style="color: var(--danger);">✗ ${result.message}</span>`;
+        msgDiv.innerHTML = '<span style="color: var(--danger);">✗ ' + result.message + '</span>';
+      }
+    }
+
+    function handleRenew(userId) {
+      const days = parseInt(prompt('¿Cuántos días de acceso deseas renovar?', '30'));
+      if (!days || days <= 0) return;
+
+      const result = renewUserAccess(userId, days);
+      if (result.success) {
+        alert('Acceso renovado hasta: ' + formatDate(result.expiresAt));
+        loadAdminData();
+      } else {
+        alert('Error: ' + result.message);
+      }
+    }
+
+    function handleRemove(userId) {
+      if (!confirm('¿Eliminar este alumno?')) return;
+      const result = removeUser(userId);
+      if (result.success) {
+        loadAdminData();
+      } else {
+        alert('Error: ' + result.message);
       }
     }
 
@@ -192,7 +236,6 @@
       reader.readAsText(file);
     }
 
-    // Cargar al iniciar
     loadAdminData();
   </script>
 </body>

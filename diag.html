@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Diagnóstico - ElectroNetwork Academy</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 2rem; }
+    .ok { color: green; }
+    .info { color: blue; }
+    .box { border: 2px solid #ccc; padding: 1rem; margin: 1rem 0; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <h1>Diagnóstico de curso.html</h1>
+  <div class="box">
+    <h2>Versión del archivo</h2>
+    <p id="version" class="info">Cargando...</p>
+  </div>
+  <div class="box">
+    <h2>Verificación de elementos</h2>
+    <p id="check-grid">Verificando grid...</p>
+    <p id="check-cards">Verificando tarjetas...</p>
+    <p id="check-scripts">Verificando scripts...</p>
+  </div>
+  <div class="box">
+    <h2>Contenido HTML crudo (primeros 2000 caracteres)</h2>
+    <pre id="raw" style="background: #f5f5f5; padding: 1rem; overflow: auto; max-height: 300px; font-size: 0.8rem;"></pre>
+  </div>
+
+  <script>
+    document.getElementById('version').textContent = 'Versión: 2026-07-22 v2 (estático)';
+
+    // Verificar si existe el grid
+    const grid = document.querySelector('.grid.grid-2');
+    document.getElementById('check-grid').textContent = grid 
+      ? '✅ Grid encontrado con ' + grid.children.length + ' hijos'
+      : '❌ Grid NO encontrado';
+
+    // Verificar tarjetas
+    const cards = document.querySelectorAll('.module-card');
+    document.getElementById('check-cards').textContent = cards.length > 0
+      ? '✅ ' + cards.length + ' tarjetas de módulo encontradas'
+      : '❌ NO hay tarjetas de módulo';
+
+    // Verificar scripts
+    const scripts = document.querySelectorAll('script');
+    document.getElementById('check-scripts').textContent = '✅ ' + scripts.length + ' scripts cargados';
+
+    // Mostrar HTML crudo del body
+    document.getElementById('raw').textContent = document.body.innerHTML.substring(0, 2000);
+  </script>
+</body>
+</html>
