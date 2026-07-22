@@ -19,7 +19,6 @@
   </header>
 
   <div class="container">
-    <!-- Progress Header -->
     <div class="card" style="text-align: center;">
       <h2 style="color: var(--primary); margin-bottom: 0.5rem;">ISO/IEC 17024:2026</h2>
       <p style="color: var(--text-light); margin-bottom: 1.5rem;">Curso de capacitación en norma de certificación de personas</p>
@@ -34,19 +33,13 @@
       </div>
     </div>
 
-    <!-- Modules Grid -->
-    <div class="grid grid-2" id="modulesGrid">
-      <!-- Dinámico -->
-    </div>
+    <div class="grid grid-2" id="modulesGrid"></div>
   </div>
 
   <script src="js/app.js"></script>
   <script>
     const user = checkAuth();
-    if (!user) {
-      window.location.href = 'index.html';
-    }
-
+    if (!user) window.location.href = 'index.html';
     document.getElementById('userName').textContent = user.name || user.email;
 
     const modules = [
@@ -73,25 +66,32 @@
         const completed = isModuleCompleted(mod.id);
         const mp = getModuleProgress(user.id, mod.id);
         const score = mp ? mp.score : 0;
+        const moduleNum = String(mod.id + 1).padStart(2, '0');
+        const moduleUrl = 'modulo-' + moduleNum + '.html';
 
         const card = document.createElement('div');
         card.className = 'module-card' + (unlocked ? '' : ' locked');
         if (unlocked) {
-          card.onclick = () => window.location.href = `modulo-0${mod.id + 1}.html`;
+          card.style.cursor = 'pointer';
+          card.onclick = function() { window.location.href = moduleUrl; };
         }
 
-        card.innerHTML = `
-          <div class="module-number" style="background: ${completed ? 'var(--success)' : unlocked ? 'var(--primary)' : '#a0aec0'};">
-            ${completed ? '✓' : mod.id + 1}
-          </div>
-          <div style="font-size: 2rem; margin-bottom: 0.5rem;">${mod.icon}</div>
-          <div class="module-title">${mod.title}</div>
-          <div class="module-desc">${mod.desc}</div>
-          <div class="module-meta">
-            <span>⏱️ ${mod.time}</span>
-            ${completed ? `<span class="badge badge-success">${score}%</span>` : unlocked ? '<span class="badge badge-primary">Disponible</span>' : '<span class="badge badge-danger">Bloqueado</span>'}
-          </div>
-        `;
+        const numBg = completed ? 'var(--success)' : (unlocked ? 'var(--primary)' : '#a0aec0');
+        const numContent = completed ? '✓' : (mod.id + 1);
+        const statusBadge = completed 
+          ? '<span class="badge badge-success">' + score + '%</span>' 
+          : (unlocked ? '<span class="badge badge-primary">Disponible</span>' : '<span class="badge badge-danger">Bloqueado</span>');
+
+        card.innerHTML = 
+          '<div class="module-number" style="background: ' + numBg + ';">' + numContent + '</div>' +
+          '<div style="font-size: 2rem; margin-bottom: 0.5rem;">' + mod.icon + '</div>' +
+          '<div class="module-title">' + mod.title + '</div>' +
+          '<div class="module-desc">' + mod.desc + '</div>' +
+          '<div class="module-meta">' +
+            '<span>⏱️ ' + mod.time + '</span>' +
+            statusBadge +
+          '</div>';
+
         grid.appendChild(card);
       });
     }
