@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campus - ElectroNetwork Academy</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-brand">
+      <div class="logo-icon">ENA</div>
+      <span>ElectroNetwork Academy</span>
+    </div>
+    <nav class="header-nav">
+      <span id="userName" style="color: rgba(255,255,255,0.9);"></span>
+      <button onclick="logout()">Cerrar Sesión</button>
+    </nav>
+  </header>
+
+  <div class="container">
+    <!-- Progress Header -->
+    <div class="card" style="text-align: center;">
+      <h2 style="color: var(--primary); margin-bottom: 0.5rem;">ISO/IEC 17024:2026</h2>
+      <p style="color: var(--text-light); margin-bottom: 1.5rem;">Curso de capacitación en norma de certificación de personas</p>
+      <div style="max-width: 400px; margin: 0 auto;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.875rem;">
+          <span>Progreso general</span>
+          <span id="progressPercent">0%</span>
+        </div>
+        <div class="progress-bar" style="height: 12px;">
+          <div class="progress-bar-fill" id="progressBar" style="width: 0%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modules Grid -->
+    <div class="grid grid-2" id="modulesGrid">
+      <!-- Dinámico -->
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script>
+    const user = checkAuth();
+    if (!user) {
+      window.location.href = 'index.html';
+    }
+
+    document.getElementById('userName').textContent = user.name || user.email;
+
+    const modules = [
+      { id: 0, title: 'Alcance y Fundamentos', desc: 'Estructura legal, esquemas de certificación y relación con ISO/IEC 17000', time: '18 min', icon: '📋' },
+      { id: 1, title: 'Imparcialidad', desc: 'Gestión de conflictos de interés y separación educación-certificación', time: '16 min', icon: '⚖️' },
+      { id: 2, title: 'Esquemas de Certificación', desc: 'Diseño, participación de partes interesadas y análisis de trabajo', time: '20 min', icon: '📐' },
+      { id: 3, title: 'Evaluación y Exámenes', desc: 'Validez, fiabilidad, supervisión y seguridad de exámenes', time: '18 min', icon: '📝' },
+      { id: 4, title: 'Inteligencia Artificial', desc: 'Requisitos nuevos de la edición 2026 para IA en certificación', time: '15 min', icon: '🤖' },
+      { id: 5, title: 'Recursos y Personal', desc: 'Competencia, confidencialidad, subcontratación y recursos', time: '17 min', icon: '👥' },
+      { id: 6, title: 'Certificación y Certificados', desc: 'Decisiones, certificados, marcas y suspensión', time: '16 min', icon: '🏆' },
+      { id: 7, title: 'Sistema de Gestión', desc: 'Auditorías, revisión de dirección, riesgos y mejora continua', time: '19 min', icon: '⚙️' }
+    ];
+
+    function loadCourse() {
+      const progress = getTotalProgress();
+      document.getElementById('progressPercent').textContent = progress + '%';
+      document.getElementById('progressBar').style.width = progress + '%';
+
+      const grid = document.getElementById('modulesGrid');
+      grid.innerHTML = '';
+
+      modules.forEach(mod => {
+        const unlocked = isModuleUnlocked(mod.id);
+        const completed = isModuleCompleted(mod.id);
+        const mp = getModuleProgress(user.id, mod.id);
+        const score = mp ? mp.score : 0;
+
+        const card = document.createElement('div');
+        card.className = 'module-card' + (unlocked ? '' : ' locked');
+        if (unlocked) {
+          card.onclick = () => window.location.href = `modulo-0${mod.id + 1}.html`;
+        }
+
+        card.innerHTML = `
+          <div class="module-number" style="background: ${completed ? 'var(--success)' : unlocked ? 'var(--primary)' : '#a0aec0'};">
+            ${completed ? '✓' : mod.id + 1}
+          </div>
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">${mod.icon}</div>
+          <div class="module-title">${mod.title}</div>
+          <div class="module-desc">${mod.desc}</div>
+          <div class="module-meta">
+            <span>⏱️ ${mod.time}</span>
+            ${completed ? `<span class="badge badge-success">${score}%</span>` : unlocked ? '<span class="badge badge-primary">Disponible</span>' : '<span class="badge badge-danger">Bloqueado</span>'}
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    loadCourse();
+  </script>
+</body>
+</html>

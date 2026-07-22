@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 2: Imparcialidad - ElectroNetwork Academy</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-brand">
+      <div class="logo-icon">ENA</div>
+      <span>ElectroNetwork Academy</span>
+    </div>
+    <nav class="header-nav">
+      <a href="curso.html">← Campus</a>
+      <button onclick="logout()">Cerrar Sesión</button>
+    </nav>
+  </header>
+
+  <div class="timer" id="timer">⏱️ 00:00</div>
+
+  <div class="container" style="max-width: 800px;">
+    <div class="card" id="introSection">
+      <div class="card-header">
+        <div class="card-title">⚖️ Módulo 2: Imparcialidad</div>
+        <span class="badge badge-info">Duración: ~16 min</span>
+      </div>
+      <p style="margin-bottom: 1rem;">Este módulo aborda los requisitos de imparcialidad, gestión de conflictos de interés y la separación entre actividades de certificación y otras actividades como capacitación o consultoría.</p>
+      <div style="background: #edf2f7; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
+        <strong style="color: var(--primary);">Objetivos de aprendizaje:</strong>
+        <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+          <li>Comprender los principios de imparcialidad en la certificación de personas (Cláusula 4.3)</li>
+          <li>Identificar y gestionar conflictos de interés (Anexo A.2)</li>
+          <li>Definir las actividades que deben mantenerse separadas de la certificación</li>
+          <li>Entender la importancia de la percepción pública de imparcialidad</li>
+        </ul>
+      </div>
+      <button class="btn btn-primary" onclick="startModule()">Comenzar Módulo</button>
+    </div>
+
+    <div id="microcasesSection" class="hidden">
+      <div class="microcase-container" id="mc1">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <span class="badge badge-primary">Microcaso 1 de 4</span>
+          <span style="font-size: 0.8rem; color: var(--text-light);">Cláusula 4.3 - Principios de imparcialidad</span>
+        </div>
+        <div class="microcase-scenario">
+          <strong>🎯 Escenario:</strong>
+          El organismo certificador "CertiPro" tiene un contrato de consultoría con una empresa para implementar un sistema de gestión de calidad. Esa misma empresa solicita la certificación de sus empleados como auditores internos ISO 9001. El director de "CertiPro" considera que no hay problema porque son "áreas diferentes" de la empresa.
+        </div>
+        <p style="margin-bottom: 1rem; font-weight: 600;">¿Qué establece la norma sobre esta situación?</p>
+        <div class="microcase-options">
+          <button class="microcase-option" onclick="handleAnswer(1, 'A', false)">A) Es válido siempre que el consultor y el evaluador sean personas diferentes.</button>
+          <button class="microcase-option" onclick="handleAnswer(1, 'B', true)">B) El organismo de certificación no debe ofrecer consultoría a clientes a los que certifica, pues esto constituye un conflicto de interés inaceptable.</button>
+          <button class="microcase-option" onclick="handleAnswer(1, 'C', false)">C) Es aceptable si la consultoría se factura por una subsidiaria legalmente separada.</button>
+          <button class="microcase-option" onclick="handleAnswer(1, 'D', false)">D) Solo es problema si el cliente lo denuncia ante el organismo de acreditación.</button>
+        </div>
+        <div class="microcase-feedback" id="feedback1">
+          <div id="feedbackText1"></div>
+          <div class="microcase-reference">📖 Referencia: ISO/IEC 17024:2026, Cláusula 4.3 - "El organismo de certificación debe ser imparcial en todas sus actividades. No debe ofrecer ni comercializar servicios de consultoría que puedan comprometer la confidencialidad, objetividad o imparcialidad de sus decisiones de certificación."</div>
+        </div>
+        <button class="btn btn-primary hidden" id="next1" onclick="showMicrocase(2)">Siguiente Microcaso →</button>
+      </div>
+
+      <div class="microcase-container hidden" id="mc2">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <span class="badge badge-primary">Microcaso 2 de 4</span>
+          <span style="font-size: 0.8rem; color: var(--text-light);">Anexo A.2 - Identificación de riesgos de imparcialidad</span>
+        </div>
+        <div class="microcase-scenario">
+          <strong>🎯 Escenario:</strong>
+          Un evaluador de "CertiPro" descubre que su hermano es uno de los candidatos a certificar en el próximo período de evaluación. El evaluador no lo había notado antes porque los candidatos se inscriben en línea y él no revisa la lista hasta el día del examen.
+        </div>
+        <p style="margin-bottom: 1rem; font-weight: 600;">¿Qué debe hacer el organismo según la norma?</p>
+        <div class="microcase-options">
+          <button class="microcase-option" onclick="handleAnswer(2, 'A', false)">A) El evaluador puede continuar si promete ser objetivo y no favorecer a su hermano.</button>
+          <button class="microcase-option" onclick="handleAnswer(2, 'B', true)">B) El organismo debe tener procedimientos para identificar riesgos de imparcialidad antes de asignar evaluadores, y debe reasignar al evaluador en este caso.</button>
+          <button class="microcase-option" onclick="handleAnswer(2, 'C', false)">C) Es suficiente con que el evaluador firme una declaración de imparcialidad el día del examen.</button>
+          <button class="microcase-option" onclick="handleAnswer(2, 'D', false)">D) El candidato debe ser descalificado automáticamente por el parentesco.</button>
+        </div>
+        <div class="microcase-feedback" id="feedback2">
+          <div id="feedbackText2"></div>
+          <div class="microcase-reference">📖 Referencia: ISO/IEC 17024:2026, Anexo A.2 - "El organismo debe identificar, analizar, documentar y eliminar o minimizar los riesgos para la imparcialidad derivados de sus actividades, incluyendo relaciones personales entre evaluadores y candidatos."</div>
+        </div>
+        <button class="btn btn-primary hidden" id="next2" onclick="showMicrocase(3)">Siguiente Microcaso →</button>
+      </div>
+
+      <div class="microcase-container hidden" id="mc3">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <span class="badge badge-primary">Microcaso 3 de 4</span>
+          <span style="font-size: 0.8rem; color: var(--text-light);">Cláusula 4.3 - Percepción pública</span>
+        </div>
+        <div class="microcase-scenario">
+          <strong>🎯 Escenario:</strong>
+          Un organismo de certificación publicita en redes sociales: "¡Certifícate con nosotros! 95% de nuestros candidatos aprueban a la primera. Ofrecemos preparación gratuita con nuestros expertos evaluadores." Esta publicidad genera muchas inscripciones, pero también recibe críticas de otros organismos del sector.
+        </div>
+        <p style="margin-bottom: 1rem; font-weight: 600;">¿Cuál es el problema con esta publicidad según la norma?</p>
+        <div class="microcase-options">
+          <button class="microcase-option" onclick="handleAnswer(3, 'A', false)">A) No hay problema; es una estrategia de marketing legítima y los números son reales.</button>
+          <button class="microcase-option" onclick="handleAnswer(3, 'B', false)">B) El problema es solo que no deben mencionar el porcentaje de aprobación, ya que eso presiona a los candidatos.</button>
+          <button class="microcase-option" onclick="handleAnswer(3, 'C', true)">C) Ofrecer preparación gratuita con los evaluadores compromete la imparcialidad y la percepción pública de objetividad. Además, el alto porcentaje de aprobación puede indicar falta de rigor en la evaluación.</button>
+          <button class="microcase-option" onclick="handleAnswer(3, 'D', false)">D) El problema es que la publicidad debe ser aprobada por el organismo de acreditación antes de publicarse.</button>
+        </div>
+        <div class="microcase-feedback" id="feedback3">
+          <div id="feedbackText3"></div>
+          <div class="microcase-reference">📖 Referencia: ISO/IEC 17024:2026, Cláusula 4.3 - "El organismo debe asegurar que sus actividades no se vean comprometidas por otras actividades, relaciones o presiones. La imparcialidad incluye tanto la objetividad real como la percepción de objetividad."</div>
+        </div>
+        <button class="btn btn-primary hidden" id="next3" onclick="showMicrocase(4)">Siguiente Microcaso →</button>
+      </div>
+
+      <div class="microcase-container hidden" id="mc4">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <span class="badge badge-primary">Microcaso 4 de 4</span>
+          <span style="font-size: 0.8rem; color: var(--text-light);">Cláusula 4.3 - Estructura de gobierno</span>
+        </div>
+        <div class="microcase-scenario">
+          <strong>🎯 Escenario:</strong>
+          El organismo "CertiPro" es propiedad de un holding empresarial que también posee una universidad, una empresa de consultoría y un laboratorio de ensayos. El holding quiere que "CertiPro" comparta oficinas, personal administrativo y sistema de facturación con las otras empresas del grupo para reducir costos.
+        </div>
+        <p style="margin-bottom: 1rem; font-weight: 600;">¿Qué debe considerar "CertiPro" según la norma?</p>
+        <div class="microcase-options">
+          <button class="microcase-option" onclick="handleAnswer(4, 'A', false)">A) Puede compartir recursos siempre que las actividades de certificación tengan prioridad en la agenda de los evaluadores.</button>
+          <button class="microcase-option" onclick="handleAnswer(4, 'B', false)">B) Es aceptable compartir recursos administrativos porque no afectan las decisiones técnicas de certificación.</button>
+          <button class="microcase-option" onclick="handleAnswer(4, 'C', true)">C) Debe evaluar si la estructura de propiedad y la compartición de recursos crean riesgos de imparcialidad. Si los riesgos no pueden ser mitigados adecuadamente, debe mantenerse como entidad separada con gobierno propio.</button>
+          <button class="microcase-option" onclick="handleAnswer(4, 'D', false)">D) No hay restricciones sobre la estructura de propiedad siempre que el organismo certificador esté legalmente constituido.</button>
+        </div>
+        <div class="microcase-feedback" id="feedback4">
+          <div id="feedbackText4"></div>
+          <div class="microcase-reference">📖 Referencia: ISO/IEC 17024:2026, Cláusula 4.3 - "El organismo debe ser una entidad legal identificable. Su estructura de gobierno debe proporcionar confianza en su imparcialidad, incluyendo la independencia de las decisiones de certificación respecto a intereses comerciales."</div>
+        </div>
+        <button class="btn btn-primary hidden" id="next4" onclick="showQuiz()">Ir a Evaluación →</button>
+      </div>
+    </div>
+
+    <div id="quizSection" class="hidden">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">📝 Evaluación del Módulo 2</div>
+          <span class="badge badge-warning">4 preguntas - Mínimo 75% para aprobar</span>
+        </div>
+
+        <div class="quiz-question" id="q1">
+          <span class="quiz-question-number">1</span>
+          <span class="quiz-question-text">Según la Cláusula 4.3, la imparcialidad del organismo de certificación incluye:</span>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="selectQuizOption(1, 'A')">A) Solo la objetividad real en las decisiones técnicas</div>
+            <div class="quiz-option" onclick="selectQuizOption(1, 'B')">B) Tanto la objetividad real como la percepción pública de objetividad</div>
+            <div class="quiz-option" onclick="selectQuizOption(1, 'C')">C) Únicamente la ausencia de sobornos o pagos directos</div>
+            <div class="quiz-option" onclick="selectQuizOption(1, 'D')">D) Solo la independencia financiera del organismo</div>
+          </div>
+        </div>
+
+        <div class="quiz-question" id="q2">
+          <span class="quiz-question-number">2</span>
+          <span class="quiz-question-text">El Anexo A.2 exige que el organismo identifique riesgos de imparcialidad derivados de:</span>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="selectQuizOption(2, 'A')">A) Únicamente relaciones financieras con candidatos</div>
+            <div class="quiz-option" onclick="selectQuizOption(2, 'B')">B) Relaciones personales, financieras, comerciales y cualquier otra que pueda comprometer la objetividad</div>
+            <div class="quiz-option" onclick="selectQuizOption(2, 'C')">C) Solo conflictos entre evaluadores de diferentes esquemas</div>
+            <div class="quiz-option" onclick="selectQuizOption(2, 'D')">D) Únicamente la presión de competidores del organismo</div>
+          </div>
+        </div>
+
+        <div class="quiz-question" id="q3">
+          <span class="quiz-question-number">3</span>
+          <span class="quiz-question-text">Un organismo de certificación puede ofrecer servicios de:</span>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="selectQuizOption(3, 'A')">A) Capacitación para el mismo esquema que certifica, siempre que sea gratuito</div>
+            <div class="quiz-option" onclick="selectQuizOption(3, 'B')">B) Consultoría a sus clientes certificados, siempre que use personal diferente</div>
+            <div class="quiz-option" onclick="selectQuizOption(3, 'C')">C) Ninguna de las actividades anteriores, ya que ambas comprometen la imparcialidad</div>
+            <div class="quiz-option" onclick="selectQuizOption(3, 'D')">D) Capacitación en esquemas diferentes a los que certifica</div>
+          </div>
+        </div>
+
+        <div class="quiz-question" id="q4">
+          <span class="quiz-question-number">4</span>
+          <span class="quiz-question-text">La estructura de gobierno del organismo debe garantizar:</span>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="selectQuizOption(4, 'A')">A) La máxima rentabilidad para los accionistas</div>
+            <div class="quiz-option" onclick="selectQuizOption(4, 'B')">B) La confianza en la imparcialidad de las decisiones de certificación, independientemente de intereses comerciales</div>
+            <div class="quiz-option" onclick="selectQuizOption(4, 'C')">C) La representación de todos los sectores industriales en su directorio</div>
+            <div class="quiz-option" onclick="selectQuizOption(4, 'D')">D) La participación de candidatos certificados en las decisiones estratégicas</div>
+          </div>
+        </div>
+
+        <button class="btn btn-primary w-full mt-2" id="submitQuiz" onclick="submitQuiz()">Enviar Evaluación</button>
+        <div id="quizResult" class="mt-2"></div>
+      </div>
+    </div>
+
+    <div id="resultsSection" class="hidden">
+      <div class="card" style="text-align: center;">
+        <div style="font-size: 4rem; margin-bottom: 1rem;">🎉</div>
+        <h2 style="color: var(--primary); margin-bottom: 1rem;">¡Módulo 2 Completado!</h2>
+        <div style="font-size: 3rem; font-weight: 800; color: var(--primary); margin: 1rem 0;" id="finalScore">0%</div>
+        <p id="finalMessage"></p>
+        <div class="mt-3 flex gap-2" style="justify-content: center;">
+          <button class="btn btn-primary" onclick="window.location.href='curso.html'">Volver al Campus</button>
+          <button class="btn btn-accent hidden" id="btnCertificate" onclick="window.location.href='certificado.html'">Ver Certificado</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script>
+    const user = checkAuth();
+    if (!user) { window.location.href = 'index.html'; }
+
+    let seconds = 0;
+    let timerInterval;
+    function startTimer() {
+      timerInterval = setInterval(() => {
+        seconds++;
+        document.getElementById('timer').textContent = '⏱️ ' + formatTime(seconds);
+      }, 1000);
+    }
+
+    const quizAnswers = { 1: 'B', 2: 'B', 3: 'C', 4: 'B' };
+    let userAnswers = {};
+    let currentMicrocase = 0;
+
+    function startModule() {
+      document.getElementById('introSection').classList.add('hidden');
+      document.getElementById('microcasesSection').classList.remove('hidden');
+      showMicrocase(1);
+      startTimer();
+    }
+
+    function showMicrocase(n) {
+      currentMicrocase = n;
+      for (let i = 1; i <= 4; i++) {
+        document.getElementById('mc' + i).classList.add('hidden');
+      }
+      document.getElementById('mc' + n).classList.remove('hidden');
+    }
+
+    function handleAnswer(mc, option, isCorrect) {
+      const container = document.getElementById('mc' + mc);
+      const options = container.querySelectorAll('.microcase-option');
+      options.forEach(opt => { opt.classList.add('disabled'); opt.disabled = true; });
+
+      const feedback = document.getElementById('feedback' + mc);
+      const feedbackText = document.getElementById('feedbackText' + mc);
+
+      if (isCorrect) {
+        feedback.classList.add('correct', 'show');
+        feedbackText.innerHTML = '<strong>✓ Correcto</strong><br>' + getCorrectExplanation(mc);
+        event.target.classList.add('selected-correct');
+      } else {
+        feedback.classList.add('wrong', 'show');
+        feedbackText.innerHTML = '<strong>✗ Incorrecto</strong><br>' + getWrongExplanation(mc);
+        event.target.classList.add('selected-wrong');
+        options.forEach(opt => { if (opt.getAttribute('onclick').includes('true')) opt.classList.add('selected-correct'); });
+      }
+      document.getElementById('next' + mc).classList.remove('hidden');
+    }
+
+    function getCorrectExplanation(n) {
+      const ex = {
+        1: 'La norma prohíbe explícitamente la combinación de consultoría y certificación para el mismo cliente, ya que el organismo no puede ser juez y parte.',
+        2: 'Los procedimientos deben identificar riesgos antes de asignar evaluadores, no después. La reasignación es la acción correcta.',
+        3: 'La preparación con evaluadores compromete la imparcialidad percibida. Además, un 95% de aprobación puede indicar falta de rigor en los criterios de evaluación.',
+        4: 'La estructura de propiedad y gobierno debe garantizar que las decisiones de certificación sean independientes de presiones comerciales.'
+      };
+      return ex[n];
+    }
+
+    function getWrongExplanation(n) {
+      const ex = {
+        1: 'La separación de personas no elimina el conflicto de interés institucional. El organismo no debe ofrecer ambos servicios al mismo cliente.',
+        2: 'Las declaraciones firmadas no sustituyen la identificación proactiva de riesgos. La norma exige procedimientos preventivos.',
+        3: 'El problema no es solo el porcentaje, sino la oferta de preparación con evaluadores, que compromete la imparcialidad percibida.',
+        4: 'La constitución legal no garantiza imparcialidad. La norma exige que la estructura de gobierno proteja específicamente la independencia de decisiones.'
+      };
+      return ex[n];
+    }
+
+    function showQuiz() {
+      document.getElementById('microcasesSection').classList.add('hidden');
+      document.getElementById('quizSection').classList.remove('hidden');
+    }
+
+    function selectQuizOption(q, option) {
+      userAnswers[q] = option;
+      document.getElementById('q' + q).querySelectorAll('.quiz-option').forEach(opt => opt.classList.remove('selected'));
+      event.target.classList.add('selected');
+    }
+
+    function submitQuiz() {
+      if (Object.keys(userAnswers).length < 4) { alert('Por favor responde todas las preguntas'); return; }
+      let correct = 0;
+      for (let i = 1; i <= 4; i++) { if (userAnswers[i] === quizAnswers[i]) correct++; }
+      const score = Math.round((correct / 4) * 100);
+      clearInterval(timerInterval);
+
+      document.getElementById('quizSection').classList.add('hidden');
+      document.getElementById('resultsSection').classList.remove('hidden');
+      document.getElementById('finalScore').textContent = score + '%';
+
+      const passed = score >= 75;
+      if (passed) {
+        document.getElementById('finalMessage').innerHTML = '<span style="color: var(--success); font-weight: 600;">✓ ¡Aprobado! Has completado el Módulo 2.</span>';
+        saveModuleProgress(1, score, true);
+        const data = getData();
+        const completed = data.moduleProgress.filter(mp => mp.userId === user.id && mp.completed).length;
+        if (completed >= 8) document.getElementById('btnCertificate').classList.remove('hidden');
+      } else {
+        document.getElementById('finalMessage').innerHTML = '<span style="color: var(--danger); font-weight: 600;">✗ No alcanzaste el 75% mínimo. Repasa el contenido e intenta de nuevo.</span><br><button class="btn btn-outline mt-2" onclick="location.reload()">Reintentar</button>';
+        saveModuleProgress(1, score, false);
+      }
+    }
+  </script>
+</body>
+</html>

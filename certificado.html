@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Certificado - ElectroNetwork Academy</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <div class="certificate-page">
+    <div style="text-align: center; margin-bottom: 2rem;" class="no-print">
+      <button class="btn btn-primary" onclick="window.print()">🖨️ Imprimir / Guardar PDF</button>
+      <button class="btn btn-outline" onclick="window.location.href='curso.html'">← Volver al Campus</button>
+    </div>
+
+    <div class="certificate-container">
+      <div class="certificate-logo">
+        <div style="font-size: 3rem; margin-bottom: 0.5rem;">⚡</div>
+        <div style="font-size: 1.8rem; font-weight: 800; color: var(--primary);">ELECTRONETWORK ACADEMY</div>
+      </div>
+
+      <div style="font-size: 1rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.2em; margin-top: 1rem;">
+        Certificado de Finalización
+      </div>
+
+      <div class="certificate-title">Certificado</div>
+
+      <div class="certificate-subtitle">
+        Se certifica que
+      </div>
+
+      <div class="certificate-name" id="certName">Nombre del Alumno</div>
+
+      <div class="certificate-subtitle">
+        ha completado satisfactoriamente el curso
+      </div>
+
+      <div class="certificate-course">
+        ISO/IEC 17024:2026<br>
+        <span style="font-size: 1rem; color: var(--text-light);">Competencia general para la certificación de personas</span>
+      </div>
+
+      <div style="margin: 2rem 0; padding: 1rem; background: #f7fafc; border-radius: 8px; display: inline-block;">
+        <div style="font-size: 0.875rem; color: var(--text-light);">Puntuación final</div>
+        <div style="font-size: 2rem; font-weight: 800; color: var(--primary);" id="certScore">85%</div>
+      </div>
+
+      <div class="certificate-date" id="certDate">
+        Fecha de emisión: -- de -- de ----
+      </div>
+
+      <div class="certificate-footer">
+        <div class="certificate-signature">
+          <div class="certificate-signature-line"></div>
+          <div style="font-weight: 600; color: var(--primary);">Director Académico</div>
+          <div style="font-size: 0.8rem; color: var(--text-light);">ElectroNetwork Academy</div>
+        </div>
+        <div class="certificate-signature">
+          <div class="certificate-signature-line"></div>
+          <div style="font-weight: 600; color: var(--primary);">Representante Legal</div>
+          <div style="font-size: 0.8rem; color: var(--text-light);">ElectroNetwork Academy</div>
+        </div>
+      </div>
+
+      <div style="margin-top: 2rem; font-size: 0.75rem; color: var(--text-light); border-top: 1px solid var(--border); padding-top: 1rem;">
+        Este certificado verifica la finalización del programa de capacitación en línea.<br>
+        ID de certificación: <span id="certId">ENA-2026-XXXX</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script>
+    const user = checkAuth();
+    if (!user) {
+      window.location.href = 'index.html';
+    }
+
+    // Verificar que haya completado todos los módulos
+    const data = getData();
+    const completedModules = data.moduleProgress.filter(mp => mp.userId === user.id && mp.completed).length;
+
+    if (completedModules < 8) {
+      alert('Debes completar todos los módulos para obtener el certificado.');
+      window.location.href = 'curso.html';
+    }
+
+    // Calcular score promedio
+    const userProgress = data.moduleProgress.filter(mp => mp.userId === user.id);
+    const avgScore = Math.round(userProgress.reduce((sum, mp) => sum + (mp.score || 0), 0) / userProgress.length);
+
+    document.getElementById('certName').textContent = user.name || user.email;
+    document.getElementById('certScore').textContent = avgScore + '%';
+    document.getElementById('certDate').textContent = 'Fecha de emisión: ' + new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+    document.getElementById('certId').textContent = 'ENA-2026-' + user.id.toUpperCase().slice(-6);
+  </script>
+</body>
+</html>

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 4: Evaluación y Exámenes - ElectroNetwork Academy</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-brand">
+      <div class="logo-icon">ENA</div>
+      <span>ElectroNetwork Academy</span>
+    </div>
+    <nav class="header-nav">
+      <a href="curso.html">← Campus</a>
+      <button onclick="logout()">Cerrar Sesión</button>
+    </nav>
+  </header>
+
+  <div class="timer" id="timer">⏱️ 00:00</div>
+
+  <div class="container" style="max-width: 800px;">
+    <div class="card" id="introSection">
+      <div class="card-header">
+        <div class="card-title">📝 Módulo 4: Evaluación y Exámenes</div>
+        <span class="badge badge-info">Duración: ~18 min</span>
+      </div>
+      <p style="margin-bottom: 1rem;">Este módulo cubre los requisitos para el diseño, desarrollo, administración y seguridad de los exámenes de certificación, incluyendo validez, fiabilidad y supervisión.</p>
+      <div style="background: #edf2f7; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
+        <strong style="color: var(--primary);">Objetivos de aprendizaje:</strong>
+        <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+          <li>Diseñar exámenes válidos y fiables (Cláusula 9.1)</li>
+          <li>Administrar exámenes con integridad y seguridad (Cláusula 9.3)</li>
+          <li>Supervisar el proceso de evaluación (Cláusula 7.4.4)</li>
+          <li>Comprender los criterios de aprobación y reaplicación</li>
+        </ul>
+      </div>
+      <button class="btn btn-primary" onclick="startModule()">Comenzar Módulo</button>
+    </div>
+
+    <div id="microcasesSection" class="hidden">
+      <div class="microcase-container" id="mc1">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <span class="badge badge-primary">Microcaso 1 de 4</span>
+          <span style="font-size: 0.8rem; color: var(--text-light);">Cláusula 9.1 - Diseño de exámenes</span>
+        </div>
+        <div class="microcase-scenario">
+          <strong>🎯 Escenario:</strong>
+          Un organismo certificador diseña un examen para "Inspector de Instalaciones Eléctricas". El examen incluye 50 preguntas teóricas sobre normas eléctricas, pero ninguna pregunta sobre identificación de riesgos en campo, uso de equipos de medición ni toma de decisiones bajo presión. La validez del examen nunca ha sido verificada estadísticamente.
+        </div>
+        <p style="margin-bottom: 1rem; font-weight: 600;">¿Qué incumple este examen según la norma?</p>
+        <div class="microcase-options">
+          <button class="microcase-option" onclick="handleAnswer(1, 'A', false)">A) No incumple nada; las normas teóricas son la base de la competencia del inspector.</button>
+          <button class="microcase-option" onclick="handleAnswer(1, 'B', true)">B) El examen debe medir lo que el análisis de trabajo identificó como competencias requeridas, y su validez debe ser verificada para asegurar que predice el desempeño profesional.</button>
+          <button class="microcase-option" onclick="handleAnswer(1, 'C', false)">C) Solo incumple que no tiene suficientes preguntas; deberían ser al menos 100.</button>
+          <button class="microcase-option" onclick="handleAnswer(1, 'D', false)">D) El problema es que no consultaron con ingenieros eléctricos para revisar el contenido.</button>
+        </div>
+        <div class="microcase-feedback" id="feedback1">
+          <div id="feedbackText1"></div>
+          <div class="microcase-reference">📖 Referencia: ISO/IEC 17024:2026, Cláusula 9.1 - "Los exámenes deben ser diseñados para medir las competencias identificadas en el análisis de trabajo. La validez del examen debe ser verificada para asegurar que mide lo que pretende medir."</div>
+        </div>
+        <button class="btn btn-primary hidden" id="next1" onclick="showMicrocase(2)">Siguiente Microcaso →</button>
+      </div>
+
+      <div class="microcase-container hidden" id="mc2">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <span class="badge badge-primary">Microcaso 2 de 4</span>
+          <span style="font-size: 0.8rem; color: var(--text-light);">Cláusula 9.1 - Fiabilidad</span>
+        </div>
+        <div class="microcase-scenario">
+          <strong>🎯 Escenario:</strong>
+          Un candidato presenta el examen de certificación y obtiene 72%. La semana siguiente, presenta el mismo examen (con preguntas diferentes pero del mismo banco) y obtiene 89%. El organismo no tiene datos sobre la consistencia de sus exámenes entre diferentes versiones ni entre diferentes evaluadores.
+        </div>
+        <p style="margin-bottom: 1rem; font-weight: 600;">¿Qué problema identifica la norma en esta situación?</p>
+        <div class="microcase-options">
+          <button class="microcase-option" onclick="handleAnswer(2, 'A', false)">A) No hay problema; la mejora del candidato demuestra que estudió entre intentos.</button>
+          <button class="microcase-option" onclick="handleAnswer(2, 'B', false)">B) El problema es que permitieron presentar el examen dos veces en una semana; debería haber un período de espera mayor.</button>
+          <button class="microcase-option" onclick="handleAnswer(2, 'C', true)">C) La fiabilidad del examen está en duda. La norma exige que los exámenes sean consistentes (fiables), lo que significa que diferentes versiones y evaluadores deben producir resultados similares para el mismo nivel de competencia.</button>
+          <button class="microcase-option" onclick="handleAnswer(2, 'D', false)">D) El problema es que el candidato pudo haber memorizado las respuestas del banco de preguntas.</button>
+        </div>
+        <div class="microcase-feedback" id="feedback2">
+          <div id="feedbackText2"></div>
+          <div class="microcase-reference">📖 Referencia: ISO/IEC 17024:2026, Cláusula 9.1 - "La fiabilidad del examen debe ser verificada para asegurar que los resultados son consistentes entre diferentes versiones, administraciones y evaluadores."</div>
+        </div>
+        <button class="btn btn-primary hidden" id="next2" onclick="showMicrocase(3)">Siguiente Microcaso →</button>
+      </div>
+
+      <div class="microcase-container hidden" id="mc3">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <span class="badge badge-primary">Microcaso 3 de 4</span>
+          <span style="font-size: 0.8rem; color: var(--text-light);">Cláusula 9.3 - Seguridad de exámenes</span>
+        </div>
+        <div class="microcase-scenario">
+          <strong>🎯 Escenario:</strong>
+          Un organismo certificador administra exámenes en línea sin supervisión. Los candidatos pueden acceder a internet, usar calculadoras externas, y no hay verificación de identidad. Varias personas han compartido capturas de pantalla del examen en grupos de redes sociales.
+        </div>
+        <p style="margin-bottom: 1rem; font-weight: 600;">¿Qué requisitos de seguridad incumple este organismo?</p>
+        <div class="microcase-options">
+          <button class="microcase-option" onclick="handleAnswer(3, 'A', false)">A) No incumple nada; los exámenes en línea son inherentemente menos seguros y eso es aceptable.</button>
+          <button class="microcase-option" onclick="handleAnswer(3, 'B', true)">B) La norma exige que el organismo implemente medidas de seguridad apropiadas para prevenir fraude, incluyendo verificación de identidad, supervisión del proceso y protección de la confidencialidad del contenido del examen.</button>
+          <button class="microcase-option" onclick="handleAnswer(3, 'C', false)">C) Solo incumple que no prohíben el uso de calculadoras; lo demás es inevitable en línea.</button>
+          <button class="microcase-option" onclick="handleAnswer(3, 'D', false)">D) El problema es que no usan un software de proctoring costoso; con eso se resolvería todo.</button>
+        </div>
+        <div class="microcase-feedback" id="feedback3">
+          <div id="feedbackText3"></div>
+          <div class="microcase-reference">📖 Referencia: ISO/IEC 17024:2026, Cláusula 9.3 - "El organismo debe establecer procedimientos para asegurar la integridad y seguridad de los exámenes, incluyendo medidas para prevenir el fraude, la copia y el acceso no autorizado al contenido del examen."</div>
+        </div>
+        <button class="btn btn-primary hidden" id="next3" onclick="showMicrocase(4)">Siguiente Microcaso →</button>
+      </div>
+
+      <div class="microcase-container hidden" id="mc4">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <span class="badge badge-primary">Microcaso 4 de 4</span>
+          <span style="font-size: 0.8rem; color: var(--text-light);">Cláusula 7.4.4 - Supervisión de evaluadores</span>
+        </div>
+        <div class="microcase-scenario">
+          <strong>🎯 Escenario:</strong>
+          Un organismo certificador asigna evaluadores para exámenes prácticos sin ningún proceso de supervisión. Los evaluadores califican según su propio criterio, sin rúbricas estandarizadas. Un candidato recibe 90% con un evaluador y 65% con otro, por el mismo desempeño en una simulación idéntica.
+        </div>
+        <p style="margin-bottom: 1rem; font-weight: 600;">¿Qué debe hacer el organismo según la norma?</p>
+        <div class="microcase-options">
+          <button class="microcase-option" onclick="handleAnswer(4, 'A', false)">A) No hay problema; la variabilidad entre evaluadores es normal y demuestra que el examen es complejo.</button>
+          <button class="microcase-option" onclick="handleAnswer(4, 'B', false)">B) Debe capacitar mejor a los evaluadores, pero no es necesario estandarizar los criterios de calificación.</button>
+          <button class="microcase-option" onclick="handleAnswer(4, 'C', true)">C) Debe establecer rúbricas de evaluación estandarizadas, supervisar regularmente a los evaluadores y verificar la consistencia inter-evaluador para asegurar que todos aplican los mismos criterios.</button>
+          <button class="microcase-option" onclick="handleAnswer(4, 'D', false)">D) Debe asignar siempre el mismo evaluador a todos los candidatos para evitar variabilidad.</button>
+        </div>
+        <div class="microcase-feedback" id="feedback4">
+          <div id="feedbackText4"></div>
+          <div class="microcase-reference">📖 Referencia: ISO/IEC 17024:2026, Cláusula 7.4.4 - "El organismo debe supervisar a los evaluadores para asegurar que aplican consistentemente los criterios de evaluación. Debe existir un sistema de aseguramiento de la calidad de la evaluación."</div>
+        </div>
+        <button class="btn btn-primary hidden" id="next4" onclick="showQuiz()">Ir a Evaluación →</button>
+      </div>
+    </div>
+
+    <div id="quizSection" class="hidden">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">📝 Evaluación del Módulo 4</div>
+          <span class="badge badge-warning">4 preguntas - Mínimo 75% para aprobar</span>
+        </div>
+
+        <div class="quiz-question" id="q1">
+          <span class="quiz-question-number">1</span>
+          <span class="quiz-question-text">Según la Cláusula 9.1, la validez de un examen significa que:</span>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="selectQuizOption(1, 'A')">A) Es difícil de aprobar</div>
+            <div class="quiz-option" onclick="selectQuizOption(1, 'B')">B) Mide lo que pretende medir y predice el desempeño profesional</div>
+            <div class="quiz-option" onclick="selectQuizOption(1, 'C')">C) Tiene muchas preguntas</div>
+            <div class="quiz-option" onclick="selectQuizOption(1, 'D')">D) Es aprobado por expertos del sector</div>
+          </div>
+        </div>
+
+        <div class="quiz-question" id="q2">
+          <span class="quiz-question-number">2</span>
+          <span class="quiz-question-text">La fiabilidad de un examen según la norma se refiere a:</span>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="selectQuizOption(2, 'A')">A) Que sea barato de administrar</div>
+            <div class="quiz-option" onclick="selectQuizOption(2, 'B')">B) Que produzca resultados consistentes entre versiones, administraciones y evaluadores</div>
+            <div class="quiz-option" onclick="selectQuizOption(2, 'C')">C) Que tenga preguntas secretas</div>
+            <div class="quiz-option" onclick="selectQuizOption(2, 'D')">D) Que sea aprobado por la mayoría de candidatos</div>
+          </div>
+        </div>
+
+        <div class="quiz-question" id="q3">
+          <span class="quiz-question-number">3</span>
+          <span class="quiz-question-text">Según la Cláusula 9.3, la seguridad del examen incluye:</span>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="selectQuizOption(3, 'A')">A) Solo el cifrado del servidor web</div>
+            <div class="quiz-option" onclick="selectQuizOption(3, 'B')">B) Medidas para prevenir fraude, copia y acceso no autorizado al contenido</div>
+            <div class="quiz-option" onclick="selectQuizOption(3, 'C')">C) Contratar guardias de seguridad física</div>
+            <div class="quiz-option" onclick="selectQuizOption(3, 'D')">D) Firmar contratos de confidencialidad con los candidatos</div>
+          </div>
+        </div>
+
+        <div class="quiz-question" id="q4">
+          <span class="quiz-question-number">4</span>
+          <span class="quiz-question-text">La Cláusula 7.4.4 exige que el organismo supervise a los evaluadores para:</span>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="selectQuizOption(4, 'A')">A) Asegurar que lleguen puntualmente a las evaluaciones</div>
+            <div class="quiz-option" onclick="selectQuizOption(4, 'B')">B) Asegurar que apliquen consistentemente los criterios de evaluación</div>
+            <div class="quiz-option" onclick="selectQuizOption(4, 'C')">C) Verificar que cobren honorarios adecuados</div>
+            <div class="quiz-option" onclick="selectQuizOption(4, 'D')">D) Controlar su número de evaluaciones mensuales</div>
+          </div>
+        </div>
+
+        <button class="btn btn-primary w-full mt-2" id="submitQuiz" onclick="submitQuiz()">Enviar Evaluación</button>
+        <div id="quizResult" class="mt-2"></div>
+      </div>
+    </div>
+
+    <div id="resultsSection" class="hidden">
+      <div class="card" style="text-align: center;">
+        <div style="font-size: 4rem; margin-bottom: 1rem;">🎉</div>
+        <h2 style="color: var(--primary); margin-bottom: 1rem;">¡Módulo 4 Completado!</h2>
+        <div style="font-size: 3rem; font-weight: 800; color: var(--primary); margin: 1rem 0;" id="finalScore">0%</div>
+        <p id="finalMessage"></p>
+        <div class="mt-3 flex gap-2" style="justify-content: center;">
+          <button class="btn btn-primary" onclick="window.location.href='curso.html'">Volver al Campus</button>
+          <button class="btn btn-accent hidden" id="btnCertificate" onclick="window.location.href='certificado.html'">Ver Certificado</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script>
+    const user = checkAuth();
+    if (!user) { window.location.href = 'index.html'; }
+
+    let seconds = 0;
+    let timerInterval;
+    function startTimer() {
+      timerInterval = setInterval(() => {
+        seconds++;
+        document.getElementById('timer').textContent = '⏱️ ' + formatTime(seconds);
+      }, 1000);
+    }
+
+    const quizAnswers = { 1: 'B', 2: 'C', 3: 'B', 4: 'B' };
+    let userAnswers = {};
+    let currentMicrocase = 0;
+
+    function startModule() {
+      document.getElementById('introSection').classList.add('hidden');
+      document.getElementById('microcasesSection').classList.remove('hidden');
+      showMicrocase(1);
+      startTimer();
+    }
+
+    function showMicrocase(n) {
+      currentMicrocase = n;
+      for (let i = 1; i <= 4; i++) {
+        document.getElementById('mc' + i).classList.add('hidden');
+      }
+      document.getElementById('mc' + n).classList.remove('hidden');
+    }
+
+    function handleAnswer(mc, option, isCorrect) {
+      const container = document.getElementById('mc' + mc);
+      const options = container.querySelectorAll('.microcase-option');
+      options.forEach(opt => { opt.classList.add('disabled'); opt.disabled = true; });
+
+      const feedback = document.getElementById('feedback' + mc);
+      const feedbackText = document.getElementById('feedbackText' + mc);
+
+      if (isCorrect) {
+        feedback.classList.add('correct', 'show');
+        feedbackText.innerHTML = '<strong>✓ Correcto</strong><br>' + getCorrectExplanation(mc);
+        event.target.classList.add('selected-correct');
+      } else {
+        feedback.classList.add('wrong', 'show');
+        feedbackText.innerHTML = '<strong>✗ Incorrecto</strong><br>' + getWrongExplanation(mc);
+        event.target.classList.add('selected-wrong');
+        options.forEach(opt => { if (opt.getAttribute('onclick').includes('true')) opt.classList.add('selected-correct'); });
+      }
+      document.getElementById('next' + mc).classList.remove('hidden');
+    }
+
+    function getCorrectExplanation(n) {
+      const ex = {
+        1: 'La validez es la propiedad más importante de un examen. Si no mide las competencias reales, la certificación no tiene valor profesional.',
+        2: 'La fiabilidad asegura que el examen es justo y predecible. Un examen no fiable genera resultados arbitrarios.',
+        3: 'La seguridad del examen protege la integridad del proceso. Sin ella, la certificación pierde credibilidad.',
+        4: 'La supervisión de evaluadores es esencial para la consistencia. Sin rúbricas estandarizadas, la evaluación es subjetiva.'
+      };
+      return ex[n];
+    }
+
+    function getWrongExplanation(n) {
+      const ex = {
+        1: 'El conocimiento teórico no garantiza competencia práctica. El análisis de trabajo debe guiar el contenido del examen.',
+        2: 'El período de espera no resuelve el problema de fondo: la inconsistencia entre versiones del examen.',
+        3: 'La seguridad no es opcional. Existen múltiples medidas técnicas y procedimentales para asegurar exámenes en línea.',
+        4: 'La capacitación sin estandarización no resuelve la inconsistencia. Las rúbricas y supervisión son requisitos normativos.'
+      };
+      return ex[n];
+    }
+
+    function showQuiz() {
+      document.getElementById('microcasesSection').classList.add('hidden');
+      document.getElementById('quizSection').classList.remove('hidden');
+    }
+
+    function selectQuizOption(q, option) {
+      userAnswers[q] = option;
+      document.getElementById('q' + q).querySelectorAll('.quiz-option').forEach(opt => opt.classList.remove('selected'));
+      event.target.classList.add('selected');
+    }
+
+    function submitQuiz() {
+      if (Object.keys(userAnswers).length < 4) { alert('Por favor responde todas las preguntas'); return; }
+      let correct = 0;
+      for (let i = 1; i <= 4; i++) { if (userAnswers[i] === quizAnswers[i]) correct++; }
+      const score = Math.round((correct / 4) * 100);
+      clearInterval(timerInterval);
+
+      document.getElementById('quizSection').classList.add('hidden');
+      document.getElementById('resultsSection').classList.remove('hidden');
+      document.getElementById('finalScore').textContent = score + '%';
+
+      const passed = score >= 75;
+      if (passed) {
+        document.getElementById('finalMessage').innerHTML = '<span style="color: var(--success); font-weight: 600;">✓ ¡Aprobado! Has completado el Módulo 4.</span>';
+        saveModuleProgress(3, score, true);
+        const data = getData();
+        const completed = data.moduleProgress.filter(mp => mp.userId === user.id && mp.completed).length;
+        if (completed >= 8) document.getElementById('btnCertificate').classList.remove('hidden');
+      } else {
+        document.getElementById('finalMessage').innerHTML = '<span style="color: var(--danger); font-weight: 600;">✗ No alcanzaste el 75% mínimo. Repasa el contenido e intenta de nuevo.</span><br><button class="btn btn-outline mt-2" onclick="location.reload()">Reintentar</button>';
+        saveModuleProgress(3, score, false);
+      }
+    }
+  </script>
+</body>
+</html>

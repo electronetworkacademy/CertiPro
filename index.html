@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ElectroNetwork Academy - Login</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <div class="login-page">
+    <div class="login-box">
+      <div class="login-logo">
+        <div class="logo-icon">ENA</div>
+        <h1>ElectroNetwork Academy</h1>
+        <p>Plataforma de capacitación ISO/IEC 17024:2026</p>
+      </div>
+
+      <div class="login-tabs">
+        <button class="login-tab active" onclick="switchTab('admin')" id="tab-admin">Administrador</button>
+        <button class="login-tab" onclick="switchTab('learner')" id="tab-learner">Alumno</button>
+      </div>
+
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label class="form-label">Correo electrónico</label>
+          <input type="email" class="form-input" id="email" placeholder="tu@correo.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Contraseña</label>
+          <input type="password" class="form-input" id="password" placeholder="••••••••" required>
+        </div>
+        <div id="loginError" class="alert alert-danger hidden" style="margin-bottom: 1rem;"></div>
+        <button type="submit" class="btn btn-primary w-full" style="padding: 0.875rem;">
+          Ingresar
+        </button>
+      </form>
+
+      <div class="text-center mt-2" style="font-size: 0.8rem; color: var(--text-light);">
+        <p>Demo: admin = electronetworkacademy@gmail.com</p>
+        <p>Demo alumno: usuario1@empresa.com</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script>
+    let currentRole = 'admin';
+
+    function switchTab(role) {
+      currentRole = role;
+      document.querySelectorAll('.login-tab').forEach(t => t.classList.remove('active'));
+      document.getElementById('tab-' + role).classList.add('active');
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const errorDiv = document.getElementById('loginError');
+
+      errorDiv.classList.add('hidden');
+
+      const result = login(email, password, currentRole);
+
+      if (result.success) {
+        if (currentRole === 'admin') {
+          window.location.href = 'admin.html';
+        } else {
+          window.location.href = 'curso.html';
+        }
+      } else {
+        errorDiv.textContent = result.message;
+        errorDiv.classList.remove('hidden');
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 3: Esquemas de Certificación - ElectroNetwork Academy</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-brand">
+      <div class="logo-icon">ENA</div>
+      <span>ElectroNetwork Academy</span>
+    </div>
+    <nav class="header-nav">
+      <a href="curso.html">← Campus</a>
+      <button onclick="logout()">Cerrar Sesión</button>
+    </nav>
+  </header>
+
+  <div class="timer" id="timer">⏱️ 00:00</div>
+
+  <div class="container" style="max-width: 800px;">
+    <div class="card" id="introSection">
+      <div class="card-header">
+        <div class="card-title">📐 Módulo 3: Esquemas de Certificación</div>
+        <span class="badge badge-info">Duración: ~20 min</span>
+      </div>
+      <p style="margin-bottom: 1rem;">Este módulo profundiza en el diseño, estructura y gestión de los esquemas de certificación de personas, incluyendo el análisis de trabajo, los requisitos de entrada y el mantenimiento de la certificación.</p>
+      <div style="background: #edf2f7; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
+        <strong style="color: var(--primary);">Objetivos de aprendizaje:</strong>
+        <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+          <li>Diseñar esquemas de certificación con participación de partes interesadas (Cláusula 8.1)</li>
+          <li>Realizar análisis de trabajo apropiados (Cláusula 8.2)</li>
+          <li>Definir requisitos de entrada y criterios de evaluación (Cláusula 8.3, 8.4)</li>
+          <li>Establecer requisitos de mantenimiento y recertificación (Cláusula 8.5, 8.6)</li>
+        </ul>
+      </div>
+      <button class="btn btn-primary" onclick="startModule()">Comenzar Módulo</button>
+    </div>
+
+    <div id="microcasesSection" class="hidden">
+      <div class="microcase-container" id="mc1">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <span class="badge badge-primary">Microcaso 1 de 4</span>
+          <span style="font-size: 0.8rem; color: var(--text-light);">Cláusula 8.3 - Requisitos de entrada</span>
+        </div>
+        <div class="microcase-scenario">
+          <strong>🎯 Escenario:</strong>
+          Un esquema de certificación para "Gerente de Proyectos Ágil" establece como requisito de entrada tener 3 años de experiencia en gestión de proyectos. Sin embargo, no especifica qué constituye "experiencia", no define cómo se verifica, ni establece si la experiencia debe ser demostrable documentalmente.
+        </div>
+        <p style="margin-bottom: 1rem; font-weight: 600;">¿Qué falta en este esquema según la norma?</p>
+        <div class="microcase-options">
+          <button class="microcase-option" onclick="handleAnswer(1, 'A', false)">A) No falta nada; los requisitos de entrada son discrecionales del organismo.</button>
+          <button class="microcase-option" onclick="handleAnswer(1, 'B', true)">B) Los requisitos de entrada deben ser definidos de manera objetiva, verificable y documentada, incluyendo criterios claros de aceptación.</button>
+          <button class="microcase-option" onclick="handleAnswer(1, 'C', false)">C) Solo falta que el requisito sea aprobado por un comité externo de expertos.</button>
+          <button class="microcase-option" onclick="handleAnswer(1, 'D', false)">D) El problema es que 3 años es muy poco; deberían ser al menos 5 años.</button>
+        </div>
+        <div class="microcase-feedback" id="feedback1">
+          <div id="feedbackText1"></div>
+          <div class="microcase-reference">📖 Referencia: ISO/IEC 17024:2026, Cláusula 8.3 - "Los requisitos de entrada deben ser objetivos, verificables, documentados y no discriminatorios. Deben incluir criterios claros para su evaluación y aceptación."</div>
+        </div>
+        <button class="btn btn-primary hidden" id="next1" onclick="showMicrocase(2)">Siguiente Microcaso →</button>
+      </div>
+
+      <div class="microcase-container hidden" id="mc2">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <span class="badge badge-primary">Microcaso 2 de 4</span>
+          <span style="font-size: 0.8rem; color: var(--text-light);">Cláusula 8.4 - Criterios de evaluación</span>
+        </div>
+        <div class="microcase-scenario">
+          <strong>🎯 Escenario:</strong>
+          Un esquema de certificación para "Auditor Energético" evalúa a los candidatos mediante un examen escrito de 100 preguntas de opción múltiple. No incluye evaluación práctica, simulaciones ni demostración de habilidades. Los auditores certificados nunca han realizado una auditoría real en campo.
+        </div>
+        <p style="margin-bottom: 1rem; font-weight: 600;">¿Qué incumple este esquema según la norma?</p>
+        <div class="microcase-options">
+          <button class="microcase-option" onclick="handleAnswer(2, 'A', false)">A) No incumple nada; los exámenes escritos son el método más objetivo de evaluación.</button>
+          <button class="microcase-option" onclick="handleAnswer(2, 'B', false)">B) El problema es que 100 preguntas son demasiadas; deberían ser máximo 50.</button>
+          <button class="microcase-option" onclick="handleAnswer(2, 'C', true)">C) Los criterios de evaluación deben reflejar las competencias requeridas según el análisis de trabajo, incluyendo demostración práctica de habilidades cuando sea pertinente.</button>
+          <button class="microcase-option" onclick="handleAnswer(2, 'D', false)">D) El problema es que no usan evaluación por pares (peer assessment).</button>
+        </div>
+        <div class="microcase-feedback" id="feedback2">
+          <div id="feedbackText2"></div>
+          <div class="microcase-reference">📖 Referencia: ISO/IEC 17024:2026, Cláusula 8.4 - "Los métodos de evaluación deben ser apropiados para las competencias que se certifican y deben incluir, cuando sea pertinente, la demostración de habilidades prácticas."</div>
+        </div>
+        <button class="btn btn-primary hidden" id="next2" onclick="showMicrocase(3)">Siguiente Microcaso →</button>
+      </div>
+
+      <div class="microcase-container hidden" id="mc3">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <span class="badge badge-primary">Microcaso 3 de 4</span>
+          <span style="font-size: 0.8rem; color: var(--text-light);">Cláusula 8.5 - Mantenimiento de la certificación</span>
+        </div>
+        <div class="microcase-scenario">
+          <strong>🎯 Escenario:</strong>
+          Un esquema de certificación para "Ingeniero de Seguridad Industrial" otorga certificados de por vida sin requisitos de mantenimiento. Los certificados emitidos en 2010 siguen siendo válidos en 2026, aunque las regulaciones de seguridad han cambiado significativamente.
+        </div>
+        <p style="margin-bottom: 1rem; font-weight: 600;">¿Qué establece la norma sobre el mantenimiento de la certificación?</p>
+        <div class="microcase-options">
+          <button class="microcase-option" onclick="handleAnswer(3, 'A', false)">A) Es válido si el esquema fue diseñado originalmente con certificación de por vida.</button>
+          <button class="microcase-option" onclick="handleAnswer(3, 'B', true)">B) El esquema debe definir requisitos de mantenimiento de la certificación que aseguren que el certificado sigue siendo válido y que el titular mantiene la competencia a lo largo del tiempo.</button>
+          <button class="microcase-option" onclick="handleAnswer(3, 'C', false)">C) Solo es necesario mantenimiento si el organismo de acreditación lo exige específicamente.</button>
+          <button class="microcase-option" onclick="handleAnswer(3, 'D', false)">D) El mantenimiento es opcional y depende de la voluntad del titular del certificado.</button>
+        </div>
+        <div class="microcase-feedback" id="feedback3">
+          <div id="feedbackText3"></div>
+          <div class="microcase-reference">📖 Referencia: ISO/IEC 17024:2026, Cláusula 8.5 - "El esquema debe especificar los requisitos para el mantenimiento de la certificación, incluyendo actividades de desarrollo profesional continuo, reevaluación periódica o combinaciones de ambas."</div>
+        </div>
+        <button class="btn btn-primary hidden" id="next3" onclick="showMicrocase(4)">Siguiente Microcaso →</button>
+      </div>
+
+      <div class="microcase-container hidden" id="mc4">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <span class="badge badge-primary">Microcaso 4 de 4</span>
+          <span style="font-size: 0.8rem; color: var(--text-light);">Cláusula 8.6 - Recertificación</span>
+        </div>
+        <div class="microcase-scenario">
+          <strong>🎯 Escenario:</strong>
+          Un esquema de certificación requiere recertificación cada 3 años mediante un examen escrito idéntico al del proceso inicial. No se considera la experiencia profesional del candidato durante esos 3 años, ni se evalúa si ha mantenido su competencia en el campo.
+        </div>
+        <p style="margin-bottom: 1rem; font-weight: 600;">¿Qué debe mejorar este esquema según la norma?</p>
+        <div class="microcase-options">
+          <button class="microcase-option" onclick="handleAnswer(4, 'A', false)">A) No necesita mejorar; un examen idéntico garantiza consistencia en el tiempo.</button>
+          <button class="microcase-option" onclick="handleAnswer(4, 'B', false)">B) Solo necesita cambiar las preguntas del examen cada 3 años para evitar que se memoricen.</button>
+          <button class="microcase-option" onclick="handleAnswer(4, 'C', true)">C) La recertificación debe considerar la experiencia profesional, el desarrollo continuo y verificar que el titular ha mantenido la competencia, no solo repetir el examen inicial.</button>
+          <button class="microcase-option" onclick="handleAnswer(4, 'D', false)">D) Debe exigir un número mínimo de horas de capacitación durante los 3 años, independientemente de la calidad de esa capacitación.</button>
+        </div>
+        <div class="microcase-feedback" id="feedback4">
+          <div id="feedbackText4"></div>
+          <div class="microcase-reference">📖 Referencia: ISO/IEC 17024:2026, Cláusula 8.6 - "La recertificación debe verificar que el titular ha mantenido la competencia. Puede incluir combinación de experiencia documentada, desarrollo profesional continuo y reevaluación."</div>
+        </div>
+        <button class="btn btn-primary hidden" id="next4" onclick="showQuiz()">Ir a Evaluación →</button>
+      </div>
+    </div>
+
+    <div id="quizSection" class="hidden">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">📝 Evaluación del Módulo 3</div>
+          <span class="badge badge-warning">4 preguntas - Mínimo 75% para aprobar</span>
+        </div>
+
+        <div class="quiz-question" id="q1">
+          <span class="quiz-question-number">1</span>
+          <span class="quiz-question-text">Según la Cláusula 8.3, los requisitos de entrada a un esquema de certificación deben ser:</span>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="selectQuizOption(1, 'A')">A) Flexibles, para no excluir candidatos potenciales</div>
+            <div class="quiz-option" onclick="selectQuizOption(1, 'B')">B) Objetivos, verificables, documentados y no discriminatorios</div>
+            <div class="quiz-option" onclick="selectQuizOption(1, 'C')">C) Definidos por el comité técnico del organismo certificador</div>
+            <div class="quiz-option" onclick="selectQuizOption(1, 'D')">D) Los mismos para todos los esquemas del organismo</div>
+          </div>
+        </div>
+
+        <div class="quiz-question" id="q2">
+          <span class="quiz-question-number">2</span>
+          <span class="quiz-question-text">La Cláusula 8.4 establece que los métodos de evaluación deben:</span>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="selectQuizOption(2, 'A')">A) Ser siempre exámenes escritos para garantizar objetividad</div>
+            <div class="quiz-option" onclick="selectQuizOption(2, 'B')">B) Ser apropiados para las competencias certificadas e incluir demostración práctica cuando sea pertinente</div>
+            <div class="quiz-option" onclick="selectQuizOption(2, 'C')">C) Ser los mismos para todos los candidatos sin excepciones</div>
+            <div class="quiz-option" onclick="selectQuizOption(2, 'D')">D) Ser definidos por los candidatos según su experiencia previa</div>
+          </div>
+        </div>
+
+        <div class="quiz-question" id="q3">
+          <span class="quiz-question-number">3</span>
+          <span class="quiz-question-text">Según la Cláusula 8.5, el mantenimiento de la certificación debe incluir:</span>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="selectQuizOption(3, 'A')">A) Pago anual de una cuota de membresía</div>
+            <div class="quiz-option" onclick="selectQuizOption(3, 'B')">B) Actividades de desarrollo profesional continuo o reevaluación periódica</div>
+            <div class="quiz-option" onclick="selectQuizOption(3, 'C')">C) Firma de una declaración de buena conducta cada año</div>
+            <div class="quiz-option" onclick="selectQuizOption(3, 'D')">D) No es obligatorio según la norma</div>
+          </div>
+        </div>
+
+        <div class="quiz-question" id="q4">
+          <span class="quiz-question-number">4</span>
+          <span class="quiz-question-text">La recertificación según la Cláusula 8.6 debe verificar:</span>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="selectQuizOption(4, 'A')">A) Que el titular ha pagado todas las cuotas pendientes</div>
+            <div class="quiz-option" onclick="selectQuizOption(4, 'B')">B) Que el titular ha mantenido la competencia a lo largo del tiempo</div>
+            <div class="quiz-option" onclick="selectQuizOption(4, 'C')">C) Que el titular no ha recibido quejas de clientes</div>
+            <div class="quiz-option" onclick="selectQuizOption(4, 'D')">D) Que el titular ha trabajado exclusivamente en el campo certificado</div>
+          </div>
+        </div>
+
+        <button class="btn btn-primary w-full mt-2" id="submitQuiz" onclick="submitQuiz()">Enviar Evaluación</button>
+        <div id="quizResult" class="mt-2"></div>
+      </div>
+    </div>
+
+    <div id="resultsSection" class="hidden">
+      <div class="card" style="text-align: center;">
+        <div style="font-size: 4rem; margin-bottom: 1rem;">🎉</div>
+        <h2 style="color: var(--primary); margin-bottom: 1rem;">¡Módulo 3 Completado!</h2>
+        <div style="font-size: 3rem; font-weight: 800; color: var(--primary); margin: 1rem 0;" id="finalScore">0%</div>
+        <p id="finalMessage"></p>
+        <div class="mt-3 flex gap-2" style="justify-content: center;">
+          <button class="btn btn-primary" onclick="window.location.href='curso.html'">Volver al Campus</button>
+          <button class="btn btn-accent hidden" id="btnCertificate" onclick="window.location.href='certificado.html'">Ver Certificado</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script>
+    const user = checkAuth();
+    if (!user) { window.location.href = 'index.html'; }
+
+    let seconds = 0;
+    let timerInterval;
+    function startTimer() {
+      timerInterval = setInterval(() => {
+        seconds++;
+        document.getElementById('timer').textContent = '⏱️ ' + formatTime(seconds);
+      }, 1000);
+    }
+
+    const quizAnswers = { 1: 'B', 2: 'B', 3: 'B', 4: 'B' };
+    let userAnswers = {};
+    let currentMicrocase = 0;
+
+    function startModule() {
+      document.getElementById('introSection').classList.add('hidden');
+      document.getElementById('microcasesSection').classList.remove('hidden');
+      showMicrocase(1);
+      startTimer();
+    }
+
+    function showMicrocase(n) {
+      currentMicrocase = n;
+      for (let i = 1; i <= 4; i++) {
+        document.getElementById('mc' + i).classList.add('hidden');
+      }
+      document.getElementById('mc' + n).classList.remove('hidden');
+    }
+
+    function handleAnswer(mc, option, isCorrect) {
+      const container = document.getElementById('mc' + mc);
+      const options = container.querySelectorAll('.microcase-option');
+      options.forEach(opt => { opt.classList.add('disabled'); opt.disabled = true; });
+
+      const feedback = document.getElementById('feedback' + mc);
+      const feedbackText = document.getElementById('feedbackText' + mc);
+
+      if (isCorrect) {
+        feedback.classList.add('correct', 'show');
+        feedbackText.innerHTML = '<strong>✓ Correcto</strong><br>' + getCorrectExplanation(mc);
+        event.target.classList.add('selected-correct');
+      } else {
+        feedback.classList.add('wrong', 'show');
+        feedbackText.innerHTML = '<strong>✗ Incorrecto</strong><br>' + getWrongExplanation(mc);
+        event.target.classList.add('selected-wrong');
+        options.forEach(opt => { if (opt.getAttribute('onclick').includes('true')) opt.classList.add('selected-correct'); });
+      }
+      document.getElementById('next' + mc).classList.remove('hidden');
+    }
+
+    function getCorrectExplanation(n) {
+      const ex = {
+        1: 'Los requisitos de entrada deben ser claros, medibles y no dejar lugar a interpretaciones subjetivas. Esto garantiza equidad y transparencia.',
+        2: 'El análisis de trabajo debe guiar los métodos de evaluación. Si la competencia requiere habilidades prácticas, el examen escrito solo es insuficiente.',
+        3: 'La certificación no es estática. Las competencias evolucionan y el titular debe demostrar que se mantiene actualizado.',
+        4: 'La recertificación debe ser más que repetir un examen. Debe verificar la competencia sostenida en el tiempo, considerando experiencia y desarrollo.'
+      };
+      return ex[n];
+    }
+
+    function getWrongExplanation(n) {
+      const ex = {
+        1: 'La norma exige requisitos objetivos y verificables. La discrecionalidad total generaría arbitrariedad.',
+        2: 'La cantidad de preguntas no es el problema. El problema es que el método no refleja las competencias reales requeridas.',
+        3: 'La certificación de por vida sin mantenimiento no garantiza competencia actual. La norma exige mecanismos de vigencia.',
+        4: 'Cambiar preguntas no resuelve el problema fundamental: la recertificación debe verificar competencia sostenida, no solo repetir evaluación inicial.'
+      };
+      return ex[n];
+    }
+
+    function showQuiz() {
+      document.getElementById('microcasesSection').classList.add('hidden');
+      document.getElementById('quizSection').classList.remove('hidden');
+    }
+
+    function selectQuizOption(q, option) {
+      userAnswers[q] = option;
+      document.getElementById('q' + q).querySelectorAll('.quiz-option').forEach(opt => opt.classList.remove('selected'));
+      event.target.classList.add('selected');
+    }
+
+    function submitQuiz() {
+      if (Object.keys(userAnswers).length < 4) { alert('Por favor responde todas las preguntas'); return; }
+      let correct = 0;
+      for (let i = 1; i <= 4; i++) { if (userAnswers[i] === quizAnswers[i]) correct++; }
+      const score = Math.round((correct / 4) * 100);
+      clearInterval(timerInterval);
+
+      document.getElementById('quizSection').classList.add('hidden');
+      document.getElementById('resultsSection').classList.remove('hidden');
+      document.getElementById('finalScore').textContent = score + '%';
+
+      const passed = score >= 75;
+      if (passed) {
+        document.getElementById('finalMessage').innerHTML = '<span style="color: var(--success); font-weight: 600;">✓ ¡Aprobado! Has completado el Módulo 3.</span>';
+        saveModuleProgress(2, score, true);
+        const data = getData();
+        const completed = data.moduleProgress.filter(mp => mp.userId === user.id && mp.completed).length;
+        if (completed >= 8) document.getElementById('btnCertificate').classList.remove('hidden');
+      } else {
+        document.getElementById('finalMessage').innerHTML = '<span style="color: var(--danger); font-weight: 600;">✗ No alcanzaste el 75% mínimo. Repasa el contenido e intenta de nuevo.</span><br><button class="btn btn-outline mt-2" onclick="location.reload()">Reintentar</button>';
+        saveModuleProgress(2, score, false);
+      }
+    }
+  </script>
+</body>
+</html>
