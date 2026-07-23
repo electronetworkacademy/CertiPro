@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 1: Introducción Conceptual - ElectroNetwork Academy</title>
+  <link rel="stylesheet" href="css/estilos.css">
+  <style>
+    .concept-section {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+    .concept-section h2 {
+      color: var(--primary);
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .concept-section h2 .emoji {
+      font-size: 2rem;
+    }
+    .analogy-box {
+      background: linear-gradient(135deg, #ebf8ff 0%, #e6fffa 100%);
+      border-left: 5px solid var(--primary);
+      padding: 1.5rem;
+      border-radius: 0 12px 12px 0;
+      margin: 1.5rem 0;
+    }
+    .analogy-box strong {
+      color: var(--primary);
+      font-size: 1.1rem;
+    }
+    .pillar-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+    }
+    .pillar-card {
+      background: white;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      transition: all 0.3s;
+    }
+    .pillar-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+    .pillar-icon {
+      font-size: 3rem;
+      margin-bottom: 0.75rem;
+    }
+    .pillar-title {
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    .pillar-desc {
+      font-size: 0.875rem;
+      color: var(--text-light);
+    }
+    .roadmap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 2rem 0;
+      padding: 1.5rem;
+      background: #f7fafc;
+      border-radius: 12px;
+    }
+    .roadmap-step {
+      text-align: center;
+      flex: 1;
+    }
+    .roadmap-step .step-num {
+      width: 40px;
+      height: 40px;
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      margin: 0 auto 0.5rem;
+    }
+    .roadmap-step .step-label {
+      font-size: 0.8rem;
+      color: var(--text-light);
+    }
+    .roadmap-arrow {
+      color: var(--accent);
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    .warmup-box {
+      background: linear-gradient(135deg, #fef5e7 0%, #fdebd0 100%);
+      border: 2px dashed var(--accent);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+    }
+    .warmup-box .question {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+    .warmup-options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .warmup-option {
+      padding: 1rem 1.25rem;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      background: white;
+      transition: all 0.2s;
+      text-align: left;
+    }
+    .warmup-option:hover {
+      border-color: var(--accent);
+      background: #fffbeb;
+    }
+    .warmup-option.selected {
+      border-color: var(--accent);
+      background: #fef3c7;
+    }
+    .warmup-feedback {
+      margin-top: 1rem;
+      padding: 1rem;
+      border-radius: 8px;
+      display: none;
+    }
+    .warmup-feedback.show {
+      display: block;
+    }
+    .nav-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+    @media (max-width: 768px) {
+      .pillar-grid { grid-template-columns: 1fr; }
+      .roadmap { flex-direction: column; gap: 1rem; }
+      .roadmap-arrow { transform: rotate(90deg); }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-brand">
+      <img src="assets/logo.jpg" alt="ENA" class="logo-img">
+      <span>ElectroNetwork Academy</span>
+    </div>
+    <nav class="header-nav">
+      <a href="curso.html">← Campus</a>
+      <button onclick="logout()">Cerrar Sesión</button>
+    </nav>
+  </header>
+
+  <div class="container" style="max-width: 900px;">
+
+    <!-- Título del módulo -->
+    <div style="text-align: center; margin-bottom: 2rem;">
+      <span class="badge badge-info" style="font-size: 0.9rem; padding: 0.5rem 1rem;">Módulo 1 de 8</span>
+      <h1 style="color: var(--primary); margin-top: 1rem; font-size: 2rem;">📋 Alcance y Fundamentos</h1>
+      <p style="color: var(--text-light); font-size: 1.1rem;">ISO/IEC 17024:2026 · Cláusulas 1, 2, 4.1, 4.2, 8.1, 8.2</p>
+    </div>
+
+    <!-- SECCIÓN 1: ¿Por qué esto importa? -->
+    <div class="concept-section">
+      <h2><span class="emoji">🎯</span> ¿Por qué esto importa?</h2>
+
+      <p style="font-size: 1.05rem; line-height: 1.7; margin-bottom: 1rem;">
+        Imagina que necesitas operar una grúa en una obra de construcción. ¿Te subirías a ella si supieras que el operador "aprendió viendo videos de YouTube"? ¿O preferirías que tenga un <strong>certificado que garantice que realmente sabe lo que hace</strong>?
+      </p>
+
+      <div class="analogy-box">
+        <strong>🚗 La analogía de la licencia de conducir</strong><br><br>
+        Cuando vas a sacar la licencia de conducir, no te la dan solo por presentarte. Hay un <strong>esquema</strong>:
+        <ul style="margin-top: 0.75rem; padding-left: 1.5rem;">
+          <li>📋 Requisitos de entrada: ser mayor de edad, pasar examen médico</li>
+          <li>📝 Evaluación teórica: señales de tránsito, normas</li>
+          <li>🚙 Evaluación práctica: manejar con un examinador</li>
+          <li>📅 Vigencia: se vence y hay que renovarla</li>
+          <li>🏛️ Autoridad: una entidad oficial la emite y controla</li>
+        </ul>
+        <p style="margin-top: 0.75rem;">
+          La <strong>ISO/IEC 17024:2026</strong> hace exactamente eso, pero para <em>cualquier</em> profesión: auditores, ingenieros, chefs, técnicos... Garantiza que quien dice saber, <strong>realmente sabe</strong>.
+        </p>
+      </div>
+
+      <p style="font-size: 1.05rem; line-height: 1.7;">
+        En este módulo vas a entender <strong>quién puede certificar</strong>, <strong>cómo se diseña un esquema de certificación</strong> y <strong>por qué la imparcialidad es sagrada</strong>. Sin estas bases, todo el resto de la norma no tiene sentido.
+      </p>
+    </div>
+
+    <!-- SECCIÓN 2: Los 3 pilares clave -->
+    <div class="concept-section">
+      <h2><span class="emoji">🏛️</span> Los 3 pilares de este módulo</h2>
+
+      <div class="pillar-grid">
+        <div class="pillar-card">
+          <div class="pillar-icon">⚖️</div>
+          <div class="pillar-title">Imparcialidad</div>
+          <div class="pillar-desc">
+            Quien enseña no puede ser quien examina. Quien examina no puede ser quien decide. La confianza pública depende de esta separación.
+          </div>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-icon">📐</div>
+          <div class="pillar-title">Esquemas bien diseñados</div>
+          <div class="pillar-desc">
+            Un certificado sin un esquema sólido detrás es solo un papel bonito. Debe basarse en el análisis real del trabajo.
+          </div>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-icon">🔍</div>
+          <div class="pillar-title">Transparencia</div>
+          <div class="pillar-desc">
+            Todo debe ser verificable: quién decide, por qué decide, y cómo se asegura que el candidato realmente es competente.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 3: Mapa de ruta -->
+    <div class="concept-section">
+      <h2><span class="emoji">🗺️</span> Tu recorrido en este módulo</h2>
+
+      <div class="roadmap">
+        <div class="roadmap-step">
+          <div class="step-num">1</div>
+          <div class="step-label">Conceptualización<br><strong>(ahora)</strong></div>
+        </div>
+        <div class="roadmap-arrow">→</div>
+        <div class="roadmap-step">
+          <div class="step-num">4</div>
+          <div class="step-label">Microcasos<br><strong>interactivos</strong></div>
+        </div>
+        <div class="roadmap-arrow">→</div>
+        <div class="roadmap-step">
+          <div class="step-num">4</div>
+          <div class="step-label">Preguntas de<br><strong>evaluación</strong></div>
+        </div>
+        <div class="roadmap-arrow">→</div>
+        <div class="roadmap-step">
+          <div class="step-num" style="background: var(--success);">✓</div>
+          <div class="step-label">Módulo<br><strong>completado</strong></div>
+        </div>
+      </div>
+
+      <p style="text-align: center; color: var(--text-light); font-size: 0.95rem;">
+        ⏱️ <strong>Duración estimada:</strong> 18 minutos · 📊 <strong>Evaluación:</strong> 4 preguntas (mínimo 75% para aprobar)
+      </p>
+    </div>
+
+    <!-- SECCIÓN 4: Pregunta calentamiento -->
+    <div class="concept-section">
+      <h2><span class="emoji">🔥</span> Pregunta de calentamiento</h2>
+      <p style="color: var(--text-light); margin-bottom: 1rem;">No hay respuesta correcta ni incorrecta. Solo piensa un momento antes de continuar.</p>
+
+      <div class="warmup-box">
+        <div class="question">
+          🤔 ¿Crees que un chef debería ser certificado con el mismo examen en Colombia, España y Japón? ¿Por qué sí o por qué no?
+        </div>
+        <div class="warmup-options">
+          <div class="warmup-option" onclick="showWarmupFeedback(this, 'A')">
+            <strong>A)</strong> Sí, porque la cocina es universal y las técnicas básicas son las mismas en todas partes.
+          </div>
+          <div class="warmup-option" onclick="showWarmupFeedback(this, 'B')">
+            <strong>B)</strong> No, porque cada país tiene ingredientes, regulaciones sanitarias y tradiciones culinarias diferentes.
+          </div>
+          <div class="warmup-option" onclick="showWarmupFeedback(this, 'C')">
+            <strong>C)</strong> Depende: habría un núcleo común de competencias, pero también requisitos locales específicos.
+          </div>
+        </div>
+        <div class="warmup-feedback" id="warmupFeedback">
+          <div id="warmupText"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botón para continuar -->
+    <div class="nav-buttons">
+      <a href="curso.html" class="btn btn-outline">← Volver al Campus</a>
+      <a href="modulo-01.html" class="btn btn-primary">Comenzar Microcasos →</a>
+    </div>
+
+  </div>
+
+  <script src="js/app.js"></script>
+  <script>
+    const user = checkAuth();
+    if (!user) window.location.href = 'index.html';
+
+    function showWarmupFeedback(element, option) {
+      // Marcar seleccionada
+      document.querySelectorAll('.warmup-option').forEach(opt => opt.classList.remove('selected'));
+      element.classList.add('selected');
+
+      const feedback = document.getElementById('warmupFeedback');
+      const text = document.getElementById('warmupText');
+
+      const responses = {
+        A: 'Interesante perspectiva. Pero piensa: ¿un sushi chef en Japón y un chef de arepas en Colombia necesitan exactamente las mismas competencias? La norma ISO/IEC 17024 habla de <strong>adaptar los esquemas al contexto</strong> sin perder estándares globales.',
+        B: 'Muy buen punto. La norma reconoce que hay competencias <strong>transversales</strong> (higiene, seguridad) y <strong>locales</strong> (ingredientes, regulaciones). Un buen esquema equilibra ambas.',
+        C: '¡Exacto! Esta es la esencia de la ISO/IEC 17024: <strong>armonización global con adaptación local</strong>. Los esquemas deben ser reconocidos internacionalmente pero pertinentes en cada contexto.'
+      };
+
+      text.innerHTML = '<strong style="color: var(--primary);">💡 Reflexión:</strong><br>' + responses[option];
+      feedback.classList.add('show');
+    }
+  </script>
+</body>
+</html>
